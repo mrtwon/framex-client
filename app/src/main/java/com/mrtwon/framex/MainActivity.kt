@@ -34,6 +34,7 @@ import kotlinx.android.synthetic.main.fragment_top_content.view.*
 class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListener {
     lateinit var navController: NavController
     lateinit var bottomBar: BottomNavigationView
+    val test = "123"
     val vm: MainViewModel by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
