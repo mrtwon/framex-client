@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">FrameX</string>
+    <string name="tab_movie">Фильмы</string>
+    <string name="tab_serial">Сериалы</string>
+    <string name="tab_favorite">Избранные</string>
+    <string name="tab_recent">Недавние Просмотры</string>
+
+    <string name="textView_label_category_favorite">Избранные</string>
+    <string name="textView_label_category_recent">Моя история</string>
+    <string name="textView_name_group_category">Категории ТОП-100 x</string>
+
+    <string name="textView_help_search_description">Введетие ключевые слова которые могут быть в описании</string>
+    <string name="textView_favorite_not_found">Вы еще ничего не добавили в Избранное ... 🎬</string>
+    <string name="network_warning">Интернет не доступен</string>
+    <string name="new_type">Новинки этого года</string>
+    <string name="comedy_type">Комедия</string>
+    <string name="horror_type">Ужасы</string>
+    <string name="fantasy_type">Фентези</string>
+    <string name="drama_type">Драма</string>
+    <string name="action_type">Боевик</string>
+    <string name="criminal_type">Криминал</string>
+    <string name="biography_type">Биография</string>
+    <string name="documental_type">Документальный фильм</string>
+    <string name="adventure_type">Приключения</string>
+    <string name="detective_type">Детектив</string>
+    <string name="text_button_look">Смотреть</string>
+    <string name="text_button_download">Скачать</string>
+
+    <string name="edit_text_hint_search">Поиск</string>
+    <string name="edit_text_hint_search_description">Поиск по описанию</string>
+
+</resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item
+    android:id="@+id/home"
+    android:enabled="true"
+    android:title="Главная"
+    android:icon="@drawable/ic_home"/>
+<item
+    android:id="@+id/favorite"
+    android:enabled="true"
+    android:title="Избранные"
+    android:icon="@drawable/ic_favorite_click"/>
+<item
+    android:id="@+id/search"
+    android:enabled="true"
+    android:title="Найти"
+    android:icon="@drawable/ic_search"/>
+<item
+    android:id="@+id/update"
+    android:enabled="true"
+    android:title="Обновить"
+    android:icon="@drawable/ic_update"/>
+
+
+</menu>

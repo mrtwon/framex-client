@@ -1,0 +1,25 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorPrimaryDark</item>
+        <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+    </style>
+
+    <style name="AppTheme.About" parent="AppTheme">
+        <item name="colorPrimaryDark">#222222</item>
+        <item name="android:navigationBarColor">#222222</item>
+    </style>
+
+    <style name="Style.Video" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimaryDark">#000</item>
+        <item name="android:navigationBarColor">#000</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+</resources>

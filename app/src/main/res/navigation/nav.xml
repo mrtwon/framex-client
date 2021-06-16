@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav"
+    app:startDestination="@id/fragmentHome">
+
+    <fragment
+        android:id="@+id/fragmentHome"
+        android:name="com.mrtwon.framex.FragmentHome.FragmentHome"
+        android:label="FragmentHome" >
+        <action
+            android:id="@+id/action_fragmentHome_to_fragmentTop"
+            app:destination="@id/fragmentTop"
+            app:enterAnim="@anim/slide_in_one"
+            app:exitAnim="@anim/slide_out_one"
+            app:popEnterAnim="@anim/slide_in_two"
+            app:popExitAnim="@anim/slide_out_two"
+        />
+        <action
+            android:id="@+id/action_fragmentHome_to_fragmentFavorite"
+            app:destination="@id/fragmentFavorite"
+            app:enterAnim="@anim/slide_in_one"
+            app:exitAnim="@anim/slide_out_one"
+            app:popEnterAnim="@anim/slide_in_two"
+            app:popExitAnim="@anim/slide_out_two"
+            />
+        <action
+            android:id="@+id/action_fragmentHome_to_fragmentSearch"
+            app:destination="@id/fragmentSearch" />
+        <action
+            android:id="@+id/action_fragmentHome_to_fragmentSearchDescription"
+            app:destination="@id/fragmentSearchDescription" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentTop"
+        android:name="com.mrtwon.framex.FragmentTop.FragmentTop"
+        android:label="FragmentTop" >
+        <action
+            android:id="@+id/action_fragmentTop_to_fragmentAboutMovie"
+            app:destination="@id/fragmentAboutMovie"
+            app:enterAnim="@anim/slide_in_one"
+            app:exitAnim="@anim/slide_out_one"
+            app:popEnterAnim="@anim/slide_in_two"
+            app:popExitAnim="@anim/slide_out_two"
+            />
+        <action
+            android:id="@+id/action_fragmentTop_to_fragmentAboutSerial"
+            app:destination="@id/fragmentAboutSerial"
+            app:enterAnim="@anim/slide_in_one"
+            app:exitAnim="@anim/slide_out_one"
+            app:popEnterAnim="@anim/slide_in_two"
+            app:popExitAnim="@anim/slide_out_two"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentAboutSerial"
+        android:name="com.mrtwon.framex.FragmentAbout.FragmentAboutSerial"
+        android:label="FragmentAboutSerial" />
+    <fragment
+        android:id="@+id/fragmentAboutMovie"
+        android:name="com.mrtwon.framex.FragmentAbout.FragmentAboutMovie"
+        android:label="FragmentAboutMovie" />
+    <fragment
+        android:id="@+id/fragmentFavorite"
+        android:name="com.mrtwon.framex.FragmentFavorite.FragmentFavorite"
+        android:label="FragmentFavorite" >
+        <action
+            android:id="@+id/action_fragmentFavorite_to_fragmentAboutMovie"
+            app:destination="@id/fragmentAboutMovie"
+            app:enterAnim="@anim/slide_in_one"
+            app:exitAnim="@anim/slide_out_one"
+            app:popEnterAnim="@anim/slide_in_two"
+            app:popExitAnim="@anim/slide_out_two"
+            />
+        <action
+            android:id="@+id/action_fragmentFavorite_to_fragmentAboutSerial"
+            app:destination="@id/fragmentAboutSerial"
+            app:enterAnim="@anim/slide_in_one"
+            app:exitAnim="@anim/slide_out_one"
+            app:popEnterAnim="@anim/slide_in_two"
+            app:popExitAnim="@anim/slide_out_two"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentSearch"
+        android:name="com.mrtwon.framex.FragmentSearch.FragmentSearch"
+        android:label="FragmentSearch" />
+    <fragment
+        android:id="@+id/fragmentSearchDescription"
+        android:name="com.mrtwon.framex.FragmentSearch.FragmentSearchDescription"
+        android:label="FragmentSearchDescription" />
+</navigation>

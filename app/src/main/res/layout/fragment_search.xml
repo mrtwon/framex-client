@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+<com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:startIconDrawable="@drawable/ic_search"
+            app:startIconContentDescription="@string/edit_text_hint_search"
+            app:endIconMode="clear_text">
+<com.google.android.material.textfield.TextInputEditText
+    android:id="@+id/text_input"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    />
+
+<com.google.android.material.button.MaterialButton
+    android:id="@+id/btn_search_description"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Попробуйте поиск по описанию"
+    android:alpha="0.7"
+    android:layout_margin="10dp"
+    />
+
+</com.google.android.material.textfield.TextInputLayout>
+
+</LinearLayout>
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/recycler_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone"
+    />
+    <LinearLayout
+        android:id="@+id/welcome_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="visible"
+        >
+    <ImageView
+        android:id="@+id/welcome_image"
+        android:layout_width="300dp"
+        android:layout_height="330dp"
+        android:alpha="0.5"
+        android:src="@drawable/sherlok_stik_001"
+        />
+
+    </LinearLayout>
+</LinearLayout>
