@@ -45,6 +45,7 @@ open class Movie: Content(){
                 kp_id = cdn.kinopoiskId?.toInt()
                 imdb_id = cdn.imdbId
                 ru_title = cdn.ruTitle
+                ru_title_lower = ru_title?.toLowerCase()
                 orig_title = cdn.origTitle
                 contentType = cdn.contentType
                 iframe_src = cdn.iframeSrc
@@ -52,6 +53,7 @@ open class Movie: Content(){
                 year = kpData?.year?.toInt()
                 filmLength = convertTime(kpData?.filmLength)
                 description = kpData?.description
+                description_lower = description?.toLowerCase()
                 ratingMpaa = kpData?.ratingMpaa?.toString()
                 poster = kpData?.posterUrl
                 kp_site = kpData?.webUrl

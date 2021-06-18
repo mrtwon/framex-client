@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <application
         android:name="com.example.startandroid.MyApplication"
         android:allowBackup="true"
@@ -20,10 +21,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".service.ServiceUpdate"/>
         <activity
             android:name=".ActivityWebView.ActivityWebView"
             android:theme="@style/Style.Video"
             />
+        <activity android:name=".ActivityUpdate.ActivityUpdate"/>
     </application>
 
 </manifest>

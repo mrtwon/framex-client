@@ -1,35 +1,16 @@
 package com.mrtwon.framex
 
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import androidx.annotation.RequiresApi
-import androidx.cardview.widget.CardView
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.viewpager.widget.PagerAdapter
-import androidx.viewpager.widget.ViewPager
-import com.dueeeke.tablayout.SegmentTabLayout
-import com.dueeeke.tablayout.SlidingTabLayout
-import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
-import com.google.android.material.navigation.NavigationView
-import com.google.android.material.tabs.TabLayout
-import com.mrtwon.framex.Content.GenresEnum
-import com.mrtwon.framex.FragmentTop.FragmentTop
-import kotlinx.android.synthetic.main.fragment_top_content.view.*
+import com.mrtwon.framex.ActivityUpdate.ActivityUpdate
 
 class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListener {
     lateinit var navController: NavController
@@ -54,6 +35,9 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
             R.id.favorite -> { navController.navigate(R.id.fragmentFavorite) }
             R.id.home -> { navController.navigate(R.id.fragmentHome)}
             R.id.search -> {  navController.navigate(R.id.fragmentSearch) }
+            R.id.update -> {
+                startActivity(Intent(this, ActivityUpdate::class.java))
+            }
         }
         return true
     }

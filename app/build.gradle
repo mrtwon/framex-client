@@ -8,6 +8,11 @@ android {
     dataBinding {
         enabled = true
     }
+    allprojects {
+        repositories {
+            maven { url "https://jitpack.io" }
+        }
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -18,7 +23,7 @@ android {
 
     defaultConfig {
         applicationId "com.mrtwon.framex"
-        minSdkVersion 23
+        minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -82,4 +87,7 @@ dependencies {
     implementation 'jp.wasabeef:picasso-transformations:2.2.1'
     // If you want to use the GPU Filters
     implementation 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
+
+    //pie loader (github)
+    compile 'com.github.zurche:plain-pie:v0.2.9'
 }
