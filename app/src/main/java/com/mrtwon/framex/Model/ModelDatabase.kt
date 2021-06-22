@@ -208,6 +208,85 @@ class ModelDatabase {
             callback(result)
         }
     }
+    fun <T : Content> addListContent(list: List<T>, contentType: String){
+        when(contentType){
+            "movie" -> {
+                db.dao().insertListMovie(list as List<Movie>)
+            }
+            "tv_series" -> {
+                db.dao().insertListSerial(list as List<Serial>)
+            }
+        }
+    }
+    fun isExistingSync(id: Int, contentType: String): Boolean{
+            return when(contentType){
+                "movie" -> {
+                    return db.dao().isExistingMovie(id) == null
+                }
+                "tv_series" -> {
+                    return db.dao().isExistingSerial(id) == null
+                }
+                else -> false
+        }
+    }
+
+    fun <T: Genres> addGenresSync(genres: List<T>, contentType: String){
+            when(contentType){
+                "movie" -> {
+                    db.dao().addGenresMovie(genres as List<GenresMovie>)
+                }
+                "tv_series" -> {
+                    db.dao().addGenresSerial(genres as List<Genres>)
+                }
+            }
+        }
+    fun <T : Countries> addCountriesSync(countries: List<T>, contentType: String){
+            when(contentType){
+                "movie" -> {
+                    db.dao().addCountriesMovie(countries as List<CountriesMovie>)
+                }
+                "tv_series" -> {
+                    db.dao().addCountriesSerial(countries as List<Countries>)
+                }
+        }
+    }
+    fun addSerialSync(content: Serial){
+        db.dao().addSerial(content)
+    }
+    fun addMovieSync(content: Movie){
+        db.dao().addMovie(content)
+    }
+    fun <T : Content> createdNewContent(content: T, contentType: String){
+        GlobalScope.launch {
+            val modelApi = ModelApi()
+            when(contentType){
+                "tv_series" ->{
+                    val pojo_kp = modelApi.giveKpSync(content.kp_id!!)
+                    val genres = Genres.buildOther(pojo_kp, content.kp_id!!, content.imdb_id)
+                    val countries = Countries.buildOther(pojo_kp, content.kp_id, content.imdb_id)
+                    addCountriesSync(countries, contentType)
+                    addGenresSync(genres, contentType)
+                }
+                "movie" -> {
+                    val pojo_kp = modelApi.giveKpSync(content.kp_id!!)
+                    val genres = GenresMovie.buildOther(pojo_kp, content.kp_id!!, content.imdb_id)
+                    val countries = CountriesMovie.buildOther(pojo_kp, content.kp_id, content.imdb_id)
+                    addCountriesSync(countries, contentType)
+                    addGenresSync(genres, contentType)
+                }
+            }
+        }
+    }
+
+    fun <T : Content> createdNewContents(content: List<T>, contentType: String){
+        GlobalScope.launch {
+            addListContent(content, contentType)
+            for (one_content in content) {
+                createdNewContent(one_content, contentType)
+            }
+        }
+    }
+
 
 
     //helper function

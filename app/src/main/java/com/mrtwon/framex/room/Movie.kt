@@ -50,7 +50,8 @@ open class Movie: Content(){
                 contentType = cdn.contentType
                 iframe_src = cdn.iframeSrc
                 //kp
-                year = kpData?.year?.toInt()
+                //year = kpData?.year?.toInt()
+                year = getDate(kpData?.year)
                 filmLength = convertTime(kpData?.filmLength)
                 description = kpData?.description
                 description_lower = description?.toLowerCase()
@@ -59,6 +60,12 @@ open class Movie: Content(){
                 kp_site = kpData?.webUrl
                 return this
             }
+        private fun getDate(s: String?): Int?{
+            if(s == null || s.isEmpty()){
+                return null
+            }
+            return s.split("-")[0].toInt()
+        }
         private fun convertTime(time: String?): Int?{
             if(time == null)
                 return null

@@ -4,10 +4,11 @@
     <string name="tab_serial">Сериалы</string>
     <string name="tab_favorite">Избранные</string>
     <string name="tab_recent">Недавние Просмотры</string>
-
+    <string name="tab_added">Добавленные</string>
     <string name="textView_label_category_favorite">Избранные</string>
     <string name="textView_label_category_recent">Моя история</string>
     <string name="textView_name_group_category">Категории ТОП-100 x</string>
+
 
     <string name="textView_help_search_description">Введетие ключевые слова которые могут быть в описании</string>
     <string name="textView_favorite_not_found">Вы еще ничего не добавили в Избранное ... 🎬</string>
@@ -28,5 +29,9 @@
 
     <string name="edit_text_hint_search">Поиск</string>
     <string name="edit_text_hint_search_description">Поиск по описанию</string>
+
+    <string name="tv_help_update_search_content">🎬 Введите название Контента который хотите добавить в базу</string>
+    <string name="tv_help_update_search_list_to_update">📃 Список пуст ...</string>
+    <string name="tv_help_update_search_not_found">🔍 Ничего не найдено ... Попробуйте поиск с оригинальным названием</string>
 
 </resources>

@@ -117,4 +117,82 @@ interface Dao {
 
     @Query("SELECT * FROM Movie WHERE description_lower LIKE :stringSearch LIMIT 20")
     fun searchDescriptionMovie(stringSearch: String): List<Content>
+
+    @Insert
+    fun insertListSerial(list: List<Serial>)
+    @Insert
+    fun insertListMovie(list: List<Movie>)
+
+    @Query("SELECT * FROM Movie WHERE id = :id")
+    fun isExistingMovie(id: Int): Movie?
+
+    @Query("SELECT * FROM Serial WHERE id = :id")
+    fun isExistingSerial(id: Int): Serial?
+    @Insert
+    fun addGenresMovie(genres: List<GenresMovie>)
+    @Insert
+    fun addGenresSerial(genres: List<Genres>)
+
+    @Insert
+    fun addCountriesMovie(countries: List<CountriesMovie>)
+    @Insert
+    fun addCountriesSerial(countries: List<Countries>)
+
+    @Query("SELECT id, kp_id FROM (SELECT *, count(kp_id) as count_id FROM Movie GROUP BY kp_id ) WHERE count_id > 1")
+    fun stepOneMovie(): List<Content>
+
+    @Query("SELECT id, kp_id FROM (SELECT *, count(kp_id) as count_id FROM Serial GROUP BY kp_id ) WHERE count_id > 1")
+    fun stepOneSerial(): List<Content>
+
+    @Query("SELECT * FROM Serial WHERE kp_id = :kp_id")
+    fun stepOneGetSerial(kp_id: Int): List<Serial>
+
+    @Query("SELECT * FROM Movie WHERE kp_id = :kp_id")
+    fun stepOneGetMovie(kp_id: Int): List<Movie>
+
+    @Query("DELETE FROM Serial WHERE id = :id")
+    fun stepOneRemoveByIdSerial(id: Int)
+
+    @Query("DELETE FROM Movie WHERE id = :id")
+    fun stepOneRemoveByIdMovie(id: Int)
+
+    @Query("UPDATE Serial SET id = :newId WHERE id = :oldId")
+    fun stepOneUpdateByIdSerial(oldId: Int, newId: Int)
+
+    @Query("UPDATE Movie SET id = :newId WHERE id = :oldId")
+    fun stepOneUpdateByIdMovie(oldId: Int, newId: Int)
+
+    //step two
+
+    @Query("SELECT id, iframe_src FROM Movie")
+    fun stepTwoGetAllMovie(): List<Content>
+
+    @Query("SELECT id, iframe_src FROM Serial")
+    fun stepTwoGetAllSerial(): List<Content>
+
+    @Query("SELECT id, kp_id, imdb_id FROM Serial WHERE kp_id NOT IN (SELECT kp_id FROM Genres)")
+    fun stepThreeGenresForUpdatingSerial(): List<Content>
+
+    @Query("SELECT id, kp_id, imdb_id FROM Movie WHERE kp_id NOT IN (SELECT kp_id FROM GenresMovie)")
+    fun stepThreeGenresForUpdatingMovie(): List<Content>
+
+    @Query("SELECT id, kp_id, imdb_id FROM Serial WHERE kp_id NOT IN (SELECT kp_id FROM Countries)")
+    fun stepThreeCountriesForUpdateSerial(): List<Content>
+
+    @Query("SELECT id, kp_id, imdb_id FROM Movie WHERE kp_id NOT IN (SELECT kp_id FROM CountriesMovie)")
+    fun stepThreeCountriesForUpdateMovie(): List<Content>
+
+    @Insert
+    fun insertGenresSerial(genres: Genres)
+    @Insert
+    fun insertCountriesSerial(countries: Countries)
+
+    @Insert
+    fun insertGenresMovie(genres: GenresMovie)
+    @Insert
+    fun insertCountriesMovie(countries: CountriesMovie)
+
+
+
+//SELECT * , count(kp_id) as count_id FROM Movie GROUP BY kp_id ORDER BY count_id DESC
 }

@@ -1,37 +1,35 @@
 package com.mrtwon.framex.service
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.example.startandroid.MyApplication
+import com.mrtwon.framex.Model.ModelDatabase
 import com.mrtwon.framex.Retrofit.InstanceApi
 import com.mrtwon.framex.Retrofit.VideoCdn.Movies.DataItem
-import com.mrtwon.framex.room.Movie
+import com.mrtwon.framex.room.*
 import kotlinx.coroutines.*
 
 class MovieUpdate : InterfaceUpdate<DataItem> {
+    private val CONTENT_TYPE = "movie"
+    private val modelDatabase = ModelDatabase()
     private val contentForUpdate = arrayListOf<DataItem>()
     var contentForProgress = hashSetOf<DataItem>()
+    val progressIntUpdate = MutableLiveData<Int>()
     lateinit var scope: CoroutineScope
 
     override suspend fun updateDatabase(callUpdate: (Unit) -> Unit): Boolean {
         return scope.async {
-            val db = MyApplication.getInstance.DB.dao()
             val listContent = when {
                 contentForUpdate.isEmpty() -> forUpdate()
                 else -> ArrayList<DataItem>(contentForUpdate)
             }
             log("START UPDATE MOVIE LIST SIZE = ${listContent.size}")
             for (element in listContent) {
-                element.kinopoiskId?.toInt()?.apply {
-                    val movie = Movie.build(
-                        giveRating(this).await(),
-                        giveKp(this).await(),
-                        element
-                    )
+                element.kinopoiskId?.let {
                     ensureActive()
-                    db.addMovie(movie)
+                    addDatabase(element)
                     callUpdate(Unit)
                     contentForUpdate.remove(element)
-                    log("[updateDB Movie] $movie")
                 }
             }
             log("end for movie update")
@@ -43,26 +41,15 @@ class MovieUpdate : InterfaceUpdate<DataItem> {
         return scope.async {
             val api = InstanceApi.videoCdn
             var currentPage = 1
-            val totalPage = api.nextPageMovie(currentPage).execute().body()?.lastPage!!
             ensureActive()
+            val totalPage = api.nextPageMovie(currentPage).execute().body()?.lastPage!!
             val result = arrayListOf<DataItem>()
             var isActual = true
             while (isActual && totalPage >= currentPage) {
-                val contentList = api.nextPageMovie(currentPage).execute().body()!!.data!!
                 ensureActive()
-                for (element in contentList) {
-                    if (element?.kinopoiskId != null && isExistingList(element)) {
-                        if (isExisting(element)) {
-                            log("[movie]  add new element [id ${element.kinopoiskId}]")
-                            result.add(element)
-                            contentForProgress.add(element)
-                        } else {
-                            log("[movie]  exit for circle. [id ${element.kinopoiskId}]")
-                            isActual = false
-                            break
-                        }
-                    }
-                }
+                val contentList = api.nextPageMovie(currentPage).execute().body()!!.data!!
+                val actualStatus = pageProcessing(contentList, result)
+                isActual = actualStatus
                 currentPage++
             }
             result.reverse()
@@ -71,7 +58,43 @@ class MovieUpdate : InterfaceUpdate<DataItem> {
             contentForUpdate
         }.await()
     }
+    suspend fun pageProcessing(list_page: List<DataItem?>, resultList: ArrayList<DataItem>): Boolean{
+        for (element in list_page) {
+            if (element?.kinopoiskId != null && isExistingList(element)) {
+                if (isExisting(element)) {
+                    log("[movie]  add new element [id ${element.kinopoiskId}]")
+                    resultList.add(element)
+                    addElementForProgressSet(element)
+                } else {
+                    log("[movie]  exit for circle. [id ${element.kinopoiskId}]")
+                    return false
+                }
+            }
+        }
+        return true
+    }
 
+    suspend fun addDatabase(cdn: DataItem){
+        cdn.kinopoiskId?.let {
+            val kp_pojo = giveKp(it.toInt()).await()
+            val rating = giveRating(it.toInt()).await()
+            // result object for add to database
+            val serial = Movie.build(rating, kp_pojo, cdn)
+            val genres = GenresMovie.build(kp_pojo, cdn)
+            val countries = CountriesMovie.build(kp_pojo, cdn)
+            //add to database
+            modelDatabase.addMovieSync(serial)
+            modelDatabase.addGenresSync(genres, CONTENT_TYPE)
+            modelDatabase.addCountriesSync(countries, CONTENT_TYPE)
+        }
+    }
+
+    private fun addElementForProgressSet(element: DataItem){
+        if(!contentForProgress.contains(element)) {
+            contentForProgress.add(element)
+            progressIntUpdate.postValue(contentForProgress.size)
+        }
+    }
     override fun isExisting(item: DataItem): Boolean {
         val db = MyApplication.getInstance.DB.dao()
         return db.movieIsAlreadyById(item.id!!) == null

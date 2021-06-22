@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import az.plainpie.PieView
+import com.google.android.material.button.MaterialButton
 import com.mrtwon.framex.R
 import com.mrtwon.framex.service.ServiceStatus
 import com.mrtwon.framex.service.ServiceUpdate
@@ -45,6 +46,10 @@ class ActivityUpdate: AppCompatActivity() {
         pbSearch = findViewById(R.id.progress_bar)
         txtStatus = findViewById(R.id.status)
 
+        findViewById<MaterialButton>(R.id.btn_update_one_element).setOnClickListener{
+            startActivity(Intent(this, ActivityUpdateSearch::class.java))
+        }
+
         //for testing
 
         /*findViewById<Button>(R.id.update).setOnClickListener { binder.status.postValue(ServiceStatus.UPDATE) }
@@ -71,6 +76,7 @@ class ActivityUpdate: AppCompatActivity() {
                 Toast.makeText(this@ActivityUpdate, "Connected", Toast.LENGTH_LONG).show()
                 observerStatus()
                 observerProgress()
+                observerCountContentForUpdate()
             }
 
         }
@@ -115,6 +121,18 @@ class ActivityUpdate: AppCompatActivity() {
         binder.progress.observe(this, androidx.lifecycle.Observer {
             pbUpdate.percentage = it.toFloat()
         })
+    }
+    fun observerCountContentForUpdate(){
+        binder.serial.progressIntUpdate.observe(this){
+            val countMovie = binder.movie.progressIntUpdate.value ?: 0
+            val count = it + countMovie
+            txtStatus.text = "Найдено $count"
+        }
+        binder.movie.progressIntUpdate.observe(this){
+            val countSerial = binder.serial.progressIntUpdate.value ?: 0
+            val count = it + countSerial
+            txtStatus.text = "Найдено $count"
+        }
     }
 
     fun stepSearchUpdate(){

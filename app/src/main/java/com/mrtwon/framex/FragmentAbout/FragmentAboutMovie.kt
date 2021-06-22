@@ -123,6 +123,7 @@ class FragmentAboutMovie: Fragment(), View.OnClickListener, Toolbar.OnMenuItemCl
     fun observerAbout(){
         aboutVM.contentData.observe(viewLifecycleOwner){
             // data binding
+            Log.i("self-about","[test] ${it.ru_title_lower} ${it.year}")
             view.movie = MovieWithGenresDataBinding(it)
 
             //load poster

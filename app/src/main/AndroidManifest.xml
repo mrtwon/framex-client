@@ -26,6 +26,8 @@
             android:name=".ActivityWebView.ActivityWebView"
             android:theme="@style/Style.Video"
             />
+        <!--<activity android:name=".ActivityUpdate.ActivityUpdate"/>-->
+        <activity android:name=".ActivityUpdate.ActivityUpdateSearch"/>
         <activity android:name=".ActivityUpdate.ActivityUpdate"/>
     </application>
 
