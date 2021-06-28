@@ -18,6 +18,7 @@
 <ul>
   <li>Из за того что тянет базу данных - увеличивается вес приложения, база данных весит около 100 мб</li>
 </ul>
+<h1>Перед сборкой обьязательно <a href="https://disk.yandex.ru/d/YOpLAIBBuL8IBA">скачайте</a> и перенесите файл database в папку assets (не удалось включить его в проект из-за ограничений github)</h1>
 <p>
 <img style="width:300px;height:650px;"src="https://i.ibb.co/3y819Zh/screen-home.jpg"/>
 <img style="width:300px;height:650px;"src="https://i.ibb.co/tBYbq7m/screen-category.jpg"/>
