@@ -13,7 +13,7 @@
 <ul>
   <li>Из за того что тянет базу данных - увеличивается вес приложения, база данных весит около 100 мб</li>
 </ul>
-<iframe src="https://www.youtube.com/embed/zgslPfPuUOQ">
+<iframe src="https://www.youtube.com/embed/zgslPfPuUOQ"/>
 
 <img style="width:300px;height:650px;"src="https://i.ibb.co/3y819Zh/screen-home.jpg"/>
 <img style="width:300px;height:650px;"src="https://i.ibb.co/tBYbq7m/screen-category.jpg"/>
