@@ -14,7 +14,7 @@
   <li>Из за того что тянет базу данных - увеличивается вес приложения, база данных весит около 100 мб</li>
 </ul>
 <p>
-<img style="width:300px;height:450px;"src="https://i.ibb.co/3y819Zh/screen-home.jpg"/>
+<img style="width:300px;height:650px;"src="https://i.ibb.co/3y819Zh/screen-home.jpg"/>
 <img style="width:300px;height:650px;"src="https://i.ibb.co/tBYbq7m/screen-category.jpg"/>
 <img style="width:300px;height:650px;"src="https://i.ibb.co/8gvpGbT/screen-show-category.jpg"/>
 <img style="width:300px;height:650px;"src="https://i.ibb.co/Xzdf7hy/screen-favorite.jpg"/>
