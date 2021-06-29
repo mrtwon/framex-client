@@ -41,6 +41,10 @@ class FragmentFavorite: Fragment() {
         return view
     }
 
+    override fun onStart() {
+        (activity as MainActivity).reselectedNavigationPosition()
+        super.onStart()
+    }
     fun observerFavorite(){
         vm.favoriteLiveData.observe(viewLifecycleOwner, Observer {
             Log.i("self-favorite","size list = ${it.size}")
@@ -60,7 +64,7 @@ class FragmentFavorite: Fragment() {
     fun observerContent(){
         vm.contentList.observe(viewLifecycleOwner, Observer {
             contentList.clear()
-            contentList.addAll(it)
+            contentList.addAll(it.reversed())
             recycler_view.adapter?.notifyDataSetChanged()
         })
     }

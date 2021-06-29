@@ -7,10 +7,7 @@ import com.example.startandroid.MyApplication
 import com.example.startandroid.room.Database
 import com.mrtwon.framex.Content.*
 import com.mrtwon.framex.room.*
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.net.IDN
 import java.util.*
 
@@ -28,6 +25,22 @@ class ModelDatabase {
                 ContentTypeEnum.MOVIE -> {
                     val resultDB = db.dao().getTopMovie(genres.toString())
                     callback(resultDB)
+                }
+            }
+        }
+    }
+    @DelicateCoroutinesApi
+    fun getTopByCollectionEnum(collectionEnum: CollectionContentEnum, content: ContentTypeEnum, callback: (List<Content>) -> Unit){
+        GlobalScope.launch {
+            val date = Calendar.getInstance().get(Calendar.YEAR)
+            when(content){
+                ContentTypeEnum.SERIAL -> {
+                    val result = db.dao().getTopSerialByCurrentYear(date)
+                    callback(result)
+                }
+                ContentTypeEnum.MOVIE -> {
+                    val result = db.dao().getTopMovieByCurrentYear(date)
+                    callback(result)
                 }
             }
         }
@@ -140,9 +153,6 @@ class ModelDatabase {
             callback(recentList)
         }
     }
-    fun getTopByCollectionContent(type: CollectionContentEnum, content: ContentTypeEnum){
-
-    }
     fun getRecentContent(callback: (List<Content>) -> Unit) {
         GlobalScope.launch {
             val recentList = db.dao().getRecentList()
@@ -208,6 +218,94 @@ class ModelDatabase {
             callback(result)
         }
     }
+    fun <T : Content> addListContent(list: List<T>, contentType: String){
+        when(contentType){
+            "movie" -> {
+                db.dao().insertListMovie(list as List<Movie>)
+            }
+            "tv_series" -> {
+                db.dao().insertListSerial(list as List<Serial>)
+            }
+        }
+    }
+    fun isExistingSync(id: Int, contentType: String): Boolean{
+            return when(contentType){
+                "movie" -> {
+                    return db.dao().isExistingMovie(id) == null
+                }
+                "tv_series" -> {
+                    return db.dao().isExistingSerial(id) == null
+                }
+                else -> false
+        }
+    }
+
+    fun <T: Genres> addGenresSync(genres: List<T>, contentType: String){
+            when(contentType){
+                "movie" -> {
+                    db.dao().addGenresMovie(genres as List<GenresMovie>)
+                }
+                "tv_series" -> {
+                    db.dao().addGenresSerial(genres as List<Genres>)
+                }
+            }
+        }
+    fun <T : Countries> addCountriesSync(countries: List<T>, contentType: String){
+            when(contentType){
+                "movie" -> {
+                    db.dao().addCountriesMovie(countries as List<CountriesMovie>)
+                }
+                "tv_series" -> {
+                    db.dao().addCountriesSerial(countries as List<Countries>)
+                }
+        }
+    }
+    fun addSerialSync(content: Serial){
+        db.dao().addSerial(content)
+    }
+    fun addMovieSync(content: Movie){
+        db.dao().addMovie(content)
+    }
+    fun <T : Content> createdNewContent(content: T, contentType: String){
+            val modelApi = ModelApi()
+            when(contentType){
+                "tv_series" ->{
+                    val pojo_kp = modelApi.giveKpSync(content.kp_id!!)
+                    val genres = Genres.buildOther(pojo_kp, content.kp_id!!, content.imdb_id)
+                    val countries = Countries.buildOther(pojo_kp, content.kp_id, content.imdb_id)
+                    addCountriesSync(countries, contentType)
+                    addGenresSync(genres, contentType)
+                }
+                "movie" -> {
+                    val pojo_kp = modelApi.giveKpSync(content.kp_id!!)
+                    val genres = GenresMovie.buildOther(pojo_kp, content.kp_id!!, content.imdb_id)
+                    val countries = CountriesMovie.buildOther(pojo_kp, content.kp_id, content.imdb_id)
+                    addCountriesSync(countries, contentType)
+                    addGenresSync(genres, contentType)
+            }
+        }
+    }
+
+    fun <T : Content> createdNewContents(content: List<T>, contentType: String){
+            for (one_content in content) {
+                createdNewContent(one_content, contentType)
+           addListContent(content, contentType)
+        }
+    }
+    fun <T : Content>createNewContentFromMix(serial: List<T>?, movie: List<T>?, resultBoolean: (Boolean) -> Unit){
+        GlobalScope.launch(CoroutineExceptionHandler { context, exception ->
+            resultBoolean(false)
+        }){
+            serial?.let {
+                createdNewContents(serial, "tv_series")
+            }
+            movie?.let {
+                createdNewContents(movie, "movie")
+            }
+            resultBoolean(true)
+        }
+    }
+
 
 
     //helper function

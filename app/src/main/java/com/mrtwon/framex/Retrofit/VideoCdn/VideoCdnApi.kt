@@ -29,6 +29,23 @@ interface VideoCdnApi {
     @GET("tv-series?api_token=gizTFEdcm6OFdqeF74t9Owbtf98DK1KT")
     fun getByKpSerial(@Query("kinopoisk_id") kp_id: Int): Call<POJOVideoCdnMovie>
 
+    @Headers("Content-Type: application/json")
+    @GET("tv-series?api_token=gizTFEdcm6OFdqeF74t9Owbtf98DK1KT")
+    fun searchSerial(@Query("query") query: String): Call<POJOVideoCdnTS>
+
+    @Headers("Content-Type: application/json")
+    @GET("movies?api_token=gizTFEdcm6OFdqeF74t9Owbtf98DK1KT")
+    fun searchMovie(@Query("query") query: String): Call<POJOVideoCdnMovie>
+
+    @Headers("Content-Type: application/json")
+    @GET("tv-series?api_token=gizTFEdcm6OFdqeF74t9Owbtf98DK1KT")
+    fun serialById(@Query("id") id: Int): Call<POJOVideoCdnTS>
+
+    @Headers("Content-Type: application/json")
+    @GET("movies?api_token=gizTFEdcm6OFdqeF74t9Owbtf98DK1KT")
+    fun movieById(@Query("id") id: Int): Call<POJOVideoCdnMovie>
+
+
 
     /*@Headers("Content-Type: application/json")
     @GET("short?api_token=gizTFEdcm6OFdqeF74t9Owbtf98DK1KT")

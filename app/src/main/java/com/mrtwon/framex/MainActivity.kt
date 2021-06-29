@@ -1,40 +1,22 @@
 package com.mrtwon.framex
 
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import androidx.annotation.RequiresApi
-import androidx.cardview.widget.CardView
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.viewpager.widget.PagerAdapter
-import androidx.viewpager.widget.ViewPager
-import com.dueeeke.tablayout.SegmentTabLayout
-import com.dueeeke.tablayout.SlidingTabLayout
-import com.google.android.material.appbar.MaterialToolbar
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
-import com.google.android.material.navigation.NavigationView
-import com.google.android.material.tabs.TabLayout
-import com.mrtwon.framex.Content.GenresEnum
-import com.mrtwon.framex.FragmentTop.FragmentTop
-import kotlinx.android.synthetic.main.fragment_top_content.view.*
+import com.mrtwon.framex.ActivityUpdate.ActivityUpdate
 
 class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListener {
     lateinit var navController: NavController
     lateinit var bottomBar: BottomNavigationView
-    val test = "123"
     val vm: MainViewModel by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,8 +37,35 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
             R.id.favorite -> { navController.navigate(R.id.fragmentFavorite) }
             R.id.home -> { navController.navigate(R.id.fragmentHome)}
             R.id.search -> {  navController.navigate(R.id.fragmentSearch) }
+            R.id.update -> {
+                startActivity(Intent(this, ActivityUpdate::class.java))
+            }
         }
         return true
+    }
+    fun reselectedNavigationPosition(){
+        val current = navController.currentDestination?.id
+        when(current){
+            R.id.fragmentHome -> {
+                if(bottomBar.selectedItemId != R.id.home) {
+                    bottomBar.selectedItemId = R.id.home
+                }
+            }
+            R.id.fragmentFavorite -> {
+                if(bottomBar.selectedItemId != R.id.favorite) {
+                    bottomBar.selectedItemId = R.id.favorite
+                }
+            }
+            R.id.fragmentSearch -> {
+                if(bottomBar.selectedItemId != R.id.search) {
+                    bottomBar.selectedItemId = R.id.search
+                }
+            }
+        }
+        log("current = $current")
+        log("fragment_home ${R.id.fragmentHome}")
+        log("fragment_favorite ${R.id.fragmentFavorite}")
+        log("fragment_search ${R.id.fragmentSearch}")
     }
 
     /*inner class NetworkState : BroadcastReceiver(){
@@ -66,4 +75,7 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
         }
 
     }*/
+    private fun log(s: String){
+        Log.i("self-main",s)
+    }
 }

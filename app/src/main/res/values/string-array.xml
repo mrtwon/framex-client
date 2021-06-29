@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="welcome_array_text">
+        <item>Вас привествует FrameX</item>
+        <item>60 000 контента</item>
+        <item>Без рекламы</item>
+        <item>В свободном доступе</item>
+    </string-array>
+</resources>

@@ -43,6 +43,12 @@ class FragmentSearch: Fragment(), View.OnClickListener {
         observerSearch()
         super.onViewCreated(view, savedInstanceState)
     }
+
+    override fun onStart() {
+        (activity as MainActivity).reselectedNavigationPosition()
+        super.onStart()
+    }
+
     fun listenerKey() {
         text_input.doAfterTextChanged {
             if (it.toString().length >= 3) {

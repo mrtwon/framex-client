@@ -18,6 +18,7 @@ import com.mrtwon.framex.MainActivity
 import com.mrtwon.framex.MainViewModel
 import com.mrtwon.framex.R
 import kotlinx.android.synthetic.main.fragment_top_content.view.*
+import pl.droidsonroids.gif.GifImageView
 
 class FragmentTop: Fragment() {
     //val vm: MainViewModel by lazy { ViewModelProvider(requireActivity()).get(MainViewModel::class.java) }

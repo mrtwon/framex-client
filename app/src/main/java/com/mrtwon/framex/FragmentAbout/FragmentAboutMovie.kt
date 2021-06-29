@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.*
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.Toast
 import android.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
@@ -17,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.appbar.MaterialToolbar
 import com.mrtwon.framex.ActivityWebView.ActivityWebView
 import com.mrtwon.framex.MainActivity
+import com.mrtwon.framex.Model.ModelApi
 import com.mrtwon.framex.R
 import com.mrtwon.framex.room.MovieWithGenresDataBinding
 import com.mrtwon.framex.databinding.FragmentAboutMovieBinding
@@ -24,10 +26,7 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 import jp.wasabeef.picasso.transformations.BlurTransformation
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.lang.Exception
 
 class FragmentAboutMovie: Fragment(), View.OnClickListener, Toolbar.OnMenuItemClickListener {
@@ -61,15 +60,7 @@ class FragmentAboutMovie: Fragment(), View.OnClickListener, Toolbar.OnMenuItemCl
         tool_bar.setNavigationIcon(R.drawable.ic_back)
         tool_bar.setNavigationOnClickListener(this)
         tool_bar.setOnMenuItemClickListener { onMenuItemClick(it) }
-        view.look.setOnClickListener{
-            id?.let {
-                startActivity(
-                    Intent(requireContext(), ActivityWebView::class.java).apply {
-                      putExtra("id", it)
-                      putExtra("content_type", "movie")
-                    },
-                )
-            }}
+        view.look.setOnClickListener{ checkBlockAndStartActivity() }
         return view.root
     }
 
@@ -92,7 +83,7 @@ class FragmentAboutMovie: Fragment(), View.OnClickListener, Toolbar.OnMenuItemCl
                     }
 
                     override fun onError(e: Exception?) {
-                        TODO("Not yet implemented")
+                        
                     }
 
                 })
@@ -123,14 +114,51 @@ class FragmentAboutMovie: Fragment(), View.OnClickListener, Toolbar.OnMenuItemCl
     fun observerAbout(){
         aboutVM.contentData.observe(viewLifecycleOwner){
             // data binding
+            Log.i("self-about","[test] ${it.ru_title_lower} ${it.year}")
             view.movie = MovieWithGenresDataBinding(it)
 
             //load poster
             Picasso.get()
                 .load(it.poster)
-                .into(view.poster)
+                .into(view.poster, object: Callback{
+                    override fun onSuccess() {}
+                    override fun onError(e: Exception?) {
+                        Log.i("self-top-content","error image load")
+                        view.poster.setImageResource(R.drawable.connect_error)
+                    }
+                })
 
             loadBackground(it.poster)
+        }
+    }
+
+    private fun checkBlockAndStartActivity() {
+        GlobalScope.launch(CoroutineExceptionHandler { _, _ -> }) {
+            id?.let {
+                val isBlocked = ModelApi().checkedBlockSync(it, "movie")
+                if (!isBlocked) {
+
+                    Log.i("self-about","checkBlockAndStartActivity !isBlocked")
+                    startActivity(
+                        Intent(requireContext(), ActivityWebView::class.java).apply {
+                            putExtra("id", it)
+                            putExtra("content_type", "movie")
+                        },
+                    )
+
+                } else {
+
+                    Log.i("self-about","checkBlockAndStartActivity isBlocked")
+                    launch(Dispatchers.Main) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Контент не доступен",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+
+                }
+            }
         }
     }
 

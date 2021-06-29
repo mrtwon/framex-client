@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    >
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/recycler_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone" />
+<TextView
+    android:id="@+id/help_search"
+    android:layout_width="250dp"
+    android:layout_height="wrap_content"
+    android:text="@string/tv_help_update_search_content"
+    android:layout_margin="20dp"
+    android:textSize="16sp"
+    android:letterSpacing="0.1"
+    android:visibility="visible"
+    />
+<TextView
+    android:id="@+id/help_not_found"
+    android:layout_width="250dp"
+    android:layout_height="wrap_content"
+    android:text="@string/tv_help_update_search_not_found"
+    android:layout_margin="20dp"
+    android:textSize="16sp"
+    android:letterSpacing="0.1"
+    android:visibility="gone"
+    />
+    <TextView
+        android:id="@+id/tv_network_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="⚠ Ошибка запроса"
+        android:textSize="22dp"
+        android:gravity="center"
+        android:visibility="gone"
+        />
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gif_load"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/gif_load"
+        android:layout_gravity="center"
+        android:alpha="0.7"
+        android:visibility="gone"
+        />
+
+</LinearLayout>

@@ -10,6 +10,7 @@ import com.example.startandroid.room.Database
 class MyApplication: Application() {
     val DB: Database by lazy{
         Room.databaseBuilder(applicationContext, Database::class.java, "database")
+            .createFromAsset("database")
             .addMigrations(object: Migration(8,9){
                 override fun migrate(database: SupportSQLiteDatabase) {
                     /*with(database) {

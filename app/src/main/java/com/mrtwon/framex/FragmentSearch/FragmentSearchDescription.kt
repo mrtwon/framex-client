@@ -96,7 +96,7 @@ class FragmentSearchDescription: Fragment(), View.OnClickListener {
                 "movie" -> "Ф"
                 else -> "С"
             }
-            itemView.linear_layout.setOnClickListener{
+            itemView.setOnClickListener{
                 val bundle = Bundle().apply {
                     putInt("id", content.id)
                 }

@@ -45,18 +45,27 @@ open class Movie: Content(){
                 kp_id = cdn.kinopoiskId?.toInt()
                 imdb_id = cdn.imdbId
                 ru_title = cdn.ruTitle
+                ru_title_lower = ru_title?.toLowerCase()
                 orig_title = cdn.origTitle
                 contentType = cdn.contentType
                 iframe_src = cdn.iframeSrc
                 //kp
-                year = kpData?.year?.toInt()
+                //year = kpData?.year?.toInt()
+                year = getDate(kpData?.year)
                 filmLength = convertTime(kpData?.filmLength)
                 description = kpData?.description
+                description_lower = description?.toLowerCase()
                 ratingMpaa = kpData?.ratingMpaa?.toString()
                 poster = kpData?.posterUrl
                 kp_site = kpData?.webUrl
                 return this
             }
+        private fun getDate(s: String?): Int?{
+            if(s == null || s.isEmpty()){
+                return null
+            }
+            return s.split("-")[0].toInt()
+        }
         private fun convertTime(time: String?): Int?{
             if(time == null)
                 return null

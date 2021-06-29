@@ -30,6 +30,7 @@ open class Serial: Content(){
                 kp_id = cdn.kinopoiskId?.toInt()
                 imdb_id = cdn.imdbId
                 ru_title = cdn.ruTitle
+                ru_title_lower = ru_title?.toLowerCase()
                 orig_title = cdn.origTitle
                 contentType = cdn.contentType
                 iframe_src = cdn.iframeSrc
@@ -38,6 +39,7 @@ open class Serial: Content(){
                 year = getDate(kpData?.year)
                 filmLength = convertTime(kpData?.filmLength)
                 description = kpData?.description
+                description_lower = description?.toLowerCase()
                 ratingMpaa = kpData?.ratingMpaa?.toString()
                 poster = kpData?.posterUrl
                 kp_site = kpData?.webUrl

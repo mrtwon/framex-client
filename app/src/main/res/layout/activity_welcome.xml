@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <com.tomer.fadingtextview.FadingTextView
+        android:id="@+id/tv_welcome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:texts="@array/welcome_array_text"
+        android:textSize="26dp"
+        android:textStyle="bold"
+        android:letterSpacing="0.1"
+        app:timeout="1000"
+        android:gravity="center"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="FrameX - это когда смотришь что хочешь, когда хочешь и главное - бесплатно\nВ приложении отсутсвует реклама и мы против любой монетизации"
+        android:padding="10dp"
+        android:visibility="gone"
+        />
+        <WebView
+            android:id="@+id/web_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
+            />
+    <!--<TextView
+        android:id="@+id/welcome_text"
+        android:layout_width="match_parent"
+        android:layout_height="270dp"
+        android:padding="10dp"
+        android:textSize="17dp"
+        android:letterSpacing="0.1"
+        android:gravity="center"
+        />-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Главное правило: Никогда не плати за то чем можно пользоватся бесплатно"
+        android:padding="10dp"
+        android:visibility="gone"
+        />
+    <CheckBox
+        android:id="@+id/check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Я за Свободный Контент"
+        android:checked="true"
+        android:buttonTint="@color/colorPrimary"
+        />
+    <ImageView
+        android:id="@+id/action_to_check_box"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:src="@drawable/sherlok_welcome"
+        android:visibility="visible"
+        />
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Начать пользоваться"
+        android:drawableRight="@drawable/ic_next_white"
+        android:layout_margin="20dp"
+        />
+</LinearLayout>

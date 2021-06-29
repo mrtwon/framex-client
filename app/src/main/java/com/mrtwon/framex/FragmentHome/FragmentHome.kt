@@ -16,6 +16,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.mrtwon.framex.Content.CollectionContentEnum
 import com.mrtwon.framex.Content.GenresEnum
 import com.mrtwon.framex.Content.ParcelableEnum
 import com.mrtwon.framex.FragmentTop.FragmentTop
@@ -32,7 +33,6 @@ class FragmentHome: Fragment() {
     val controller by lazy { (requireActivity() as MainActivity).navController }
     lateinit var recent_rv: RecyclerView
     lateinit var card_view_recent: CardView
-    lateinit var tv_db_size: TextView
     val listRecent = arrayListOf<Content>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,24 +42,21 @@ class FragmentHome: Fragment() {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         recent_rv = view.recycler_view_recent
         card_view_recent = view.recent_card_view
-        tv_db_size = view.tv_size_db
         recent_rv.adapter = AdapterRecent(listRecent, requireContext())
         recent_rv.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         clickListener(view)
         return view
     }
 
+    override fun onStart() {
+        (activity as MainActivity).reselectedNavigationPosition()
+        super.onStart()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         observerRecent()
-        observerDatabaseSize()
         vm.getRecent()
-        vm.getDatabaseSize()
         super.onViewCreated(view, savedInstanceState)
-    }
-    fun observerDatabaseSize(){
-        vm.dbSize.observe(viewLifecycleOwner, Observer {
-            tv_db_size.text = "В базе\n ${it.serial} сериалов\n  ${it.movie} фильмов"
-        })
     }
     fun observerRecent(){
         vm.listRecent.observe(viewLifecycleOwner, Observer {
@@ -75,6 +72,12 @@ class FragmentHome: Fragment() {
     }
     fun clickListener(v: View){
         v.apply {
+            findViewById<CardView>(R.id.new_type).setOnClickListener{
+                controller.navigate(R.id.action_fragmentHome_to_fragmentTop, Bundle().apply {
+                    putParcelable("collection_enum", ParcelableEnum(CollectionContentEnum.NEW))
+                    putInt("img_resource", R.drawable.new_content)
+                })
+            }
             findViewById<CardView>(R.id.comedy).setOnClickListener{
                 controller.navigate(R.id.action_fragmentHome_to_fragmentTop, Bundle().apply {
                     putParcelable("genres_enum", ParcelableEnum(GenresEnum.COMEDY))
