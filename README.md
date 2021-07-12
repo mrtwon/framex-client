@@ -1,6 +1,6 @@
 <div style="display:block;">
 <br><a href="https://www.youtube.com/watch?v=zgslPfPuUOQ">ВИДЕО ОБЗОР ПРИЛОЖЕНИЯ</a><br>
-<a href="https://disk.yandex.ru/d/sFPST3dM_24wJA">Скачать Бета-версию приложения</a>
+<a href="https://disk.yandex.ru/d/8gvslkih4shPpA">Скачать Бета-версию приложения</a>
 </div>
   <center><h2>🎬 Онлайн кинотеатр с открытым исходным кодом</h2></center>
 <p>Мой первый полноценный pet project 🙂 Он работает на 3х API (video cdn, kinopoisk api и unofficial kinopoisk api)</p>
