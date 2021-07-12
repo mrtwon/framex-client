@@ -6,7 +6,7 @@ import com.mrtwon.framex.Model.ModelDatabase
 import com.mrtwon.framex.room.Content
 
 class WebViewVM: ViewModel() {
-    val model = ModelDatabase()
+    private val model = ModelDatabase()
     val content = MutableLiveData<Content>()
     fun getVideoLink(id: Int, contentType: String){
         model.getVideoLink(id, contentType){

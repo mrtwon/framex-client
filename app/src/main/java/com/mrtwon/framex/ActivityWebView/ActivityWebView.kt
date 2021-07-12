@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
+import android.view.View
 import android.webkit.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -16,7 +17,6 @@ import java.io.ByteArrayInputStream
 class ActivityWebView: AppCompatActivity() {
     lateinit var web_view: WebView
     var id: Int? = null
-    var videoLink: String? = null
     var contentType: String? = null
     val vm: WebViewVM by lazy { ViewModelProvider(this).get(WebViewVM::class.java) }
 
@@ -24,45 +24,36 @@ class ActivityWebView: AppCompatActivity() {
         setContentView(R.layout.activity_webview)
         web_view = findViewById(R.id.web_view)
         initWebView(web_view)
-
-        videoLink = savedInstanceState?.getString("video_link")
-        if(videoLink == null){
-            id = intent.getIntExtra("id", 0)
-            contentType = intent.getStringExtra("content_type")
-            observerContent()
-            vm.getVideoLink(id!!, contentType!!)
-            vm.addRecent(id!!, contentType!!)
-        }else{
-            web_view.loadUrl(videoLink)
-        }
+        id = intent.getIntExtra("id", 0)
+        contentType = intent.getStringExtra("content_type")
+        observerContent()
+        vm.getVideoLink(id!!, contentType!!)
+        vm.addRecent(id!!, contentType!!)
         super.onCreate(savedInstanceState)
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putString("video_link", videoLink)
-        super.onSaveInstanceState(outState)
-    }
     @SuppressLint("SetJavaScriptEnabled")
     fun initWebView(wv: WebView){
         wv.apply {
-            webViewClient = CustomAdblock()
+            webViewClient = BlockOtherVideo()
             webChromeClient = WebChromeClient()
             settings.javaScriptEnabled = true
             settings.domStorageEnabled = true
             settings.javaScriptCanOpenWindowsAutomatically = true
             settings.mediaPlaybackRequiresUserGesture = false
         }
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN
     }
 
     fun observerContent(){
         vm.content.observe(this){
             it.iframe_src = "http:${it.iframe_src}"
-            web_view.loadUrl(it.iframe_src)
-            videoLink = it.iframe_src
+            web_view.loadUrl(it.iframe_src!!)
         }
     }
 
-    private class CustomAdblock internal constructor() : WebViewClient() {
+    private inner class BlockOtherVideo internal constructor() : WebViewClient() {
+
         override fun shouldInterceptRequest(view: WebView?, request: WebResourceRequest?): WebResourceResponse? {
             if(isBlockedUrl(request)){
                 log("blocked resource: ${request?.url?.host}")
@@ -72,6 +63,7 @@ class ActivityWebView: AppCompatActivity() {
                 return null
             }
         }
+
         fun createEmptyResource(): WebResourceResponse {
             return WebResourceResponse(
                 "text/plain",
@@ -79,6 +71,7 @@ class ActivityWebView: AppCompatActivity() {
                 ByteArrayInputStream("".toByteArray())
             )
         }
+
         fun isBlockedUrl(webResource: WebResourceRequest?): Boolean{
             if(webResource == null) return false
             val accessHost = "cdnland.in"
@@ -93,12 +86,26 @@ class ActivityWebView: AppCompatActivity() {
             }
             return false
         }
-        fun log(s: String){
-            Log.i("self-webview", s)
-        }
+
     }
+
+    override fun onStart() {
+        log("onStart()")
+        super.onStart()
+    }
+
+    override fun onPause() {
+        log("onPause()")
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        log("onDestroy()")
+        super.onDestroy()
+    }
+
+    fun log(s: String){
+        Log.i("self-webview-debug",s)
+    }
+
 }
-/*
-site: https://cdn100.aserverstats.com/video/6/6231.mp4
-site: protovid.com
- */

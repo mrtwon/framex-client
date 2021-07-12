@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".StartedActivity">
+        <activity android:name=".StartedActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,12 +26,21 @@
         <activity
             android:name=".ActivityWebView.ActivityWebView"
             android:theme="@style/Style.Video"
+            android:configChanges="orientation|screenSize"
             />
         <!--<activity android:name=".ActivityUpdate.ActivityUpdate"/>-->
-        <activity android:name=".ActivityUpdate.ActivityUpdateSearch"/>
-        <activity android:name=".ActivityUpdate.ActivityUpdate"/>
-        <activity android:name=".ActivityWelcome.ActivityWelcome"/>
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".ActivityUpdate.ActivityUpdateSearch"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".ActivityUpdate.ActivityUpdate"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".ActivityWelcome.ActivityWelcome"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            />
     </application>
 
 </manifest>
