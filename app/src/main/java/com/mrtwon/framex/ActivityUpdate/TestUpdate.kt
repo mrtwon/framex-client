@@ -1,3 +1,4 @@
+/*
 package com.mrtwon.framex.ActivityUpdate
 
 import android.os.Bundle
@@ -5,7 +6,6 @@ import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.startandroid.MyApplication
-import com.mrtwon.framex.Model.ModelDatabase
 import com.mrtwon.framex.R
 import com.mrtwon.framex.Retrofit.InstanceApi
 import com.mrtwon.framex.Retrofit.Kinopoisk.POJOKinopoisk
@@ -51,7 +51,8 @@ class TestUpdate: AppCompatActivity() {
     }
     fun stepThreeGenresMovie(){
         GlobalScope.launch {
-            /*
+            */
+/*
             val db = MyApplication.getInstance.DB.dao()
             val listId = db.stepThreeGenresForUpdatingSerial()
             log("[?] start updating. List size = ${listId.size}\n\n")
@@ -64,7 +65,8 @@ class TestUpdate: AppCompatActivity() {
                 db.addGenresSerial(genres)
                 db.addCountriesSerial(countries)
                 log("[+] updating [id ${element.id}|${element.kp_id}|${element.imdb_id}] genres: $genresString  |  countries: $countriesString")
-            }*/
+            }*//*
+
             val db = MyApplication.getInstance.DB.dao()
             val listId = db.stepThreeGenresForUpdatingMovie()
             log("[?] start updating. List size = ${listId.size}\n\n")
@@ -125,7 +127,8 @@ class TestUpdate: AppCompatActivity() {
     }
     fun stepOne(){
         GlobalScope.launch {
-            /*val db = MyApplication.getInstance.DB.dao()
+            */
+/*val db = MyApplication.getInstance.DB.dao()
             val idList = db.stepOneSerial()
             for(element in idList){
                 val listFromTwoElement = db.stepOneGetSerial(element.kp_id!!)
@@ -138,7 +141,8 @@ class TestUpdate: AppCompatActivity() {
                         log("else ... [${two_element.id} == $idString]")
                     }
                 }
-            }*/
+            }*//*
+
             val db = MyApplication.getInstance.DB.dao()
             val idList = db.stepOneMovie()
             for(element in idList){
@@ -241,4 +245,4 @@ class TestUpdate: AppCompatActivity() {
     fun giveRating(kp_id: Int): Deferred<RatingPOJO> = GlobalScope.async(Dispatchers.IO){
         RatingApi.getRating(kp_id)
     }
-}
+}*/

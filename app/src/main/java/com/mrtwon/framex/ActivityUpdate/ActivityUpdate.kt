@@ -151,7 +151,7 @@ class ActivityUpdate: AppCompatActivity() {
     fun stepSearchUpdate(){
         cleanStep()
         pbSearch.visibility = View.VISIBLE
-        txtStatus.text = "Поиск Обновлений ..."
+        txtStatus.text = ServiceStatus.CHECK.description
         stop.isEnabled = true
         stop_service.isEnabled = true
         start.isEnabled = false
@@ -159,7 +159,7 @@ class ActivityUpdate: AppCompatActivity() {
     fun stepUpdate(){
         cleanStep()
         pbUpdate.visibility = View.VISIBLE
-        txtStatus.text = "Обновление Базы Данных ..."
+        txtStatus.text = ServiceStatus.UPDATE.description
         stop.isEnabled = true
         stop_service.isEnabled = true
         start.isEnabled = false
@@ -167,34 +167,34 @@ class ActivityUpdate: AppCompatActivity() {
     fun stepStopped(){
         cleanStep()
         success.visibility = View.VISIBLE
-        txtStatus.text = "Обновление Остановленно."
+        txtStatus.text = ServiceStatus.STOP.description
         stop.isEnabled = false
         start.isEnabled = true
     }
     fun stepEnd(){
         cleanStep()
         success.visibility = View.VISIBLE
-        txtStatus.text = "База данных обновленна."
+        txtStatus.text = ServiceStatus.END_UPDATE.description
         start.isEnabled = true
     }
     fun stepNoUpdate(){
         cleanStep()
         success.visibility = View.VISIBLE
-        txtStatus.text = "Обновлений нет."
+        txtStatus.text = ServiceStatus.NOT_UPDATE.description
         start.isEnabled = true
 
     }
     fun stepDisconnect(){
         cleanStep()
         disconnect.visibility = View.VISIBLE
-        txtStatus.text = "Проверьте доступ к сети"
+        txtStatus.text = ServiceStatus.DISCONNECT.description
         start.isEnabled = false
         stop.isEnabled = false
         stop_service.isEnabled = false
     }
     fun stepStopService(){
         cleanStep()
-        txtStatus.text = "Обновление прерванно."
+        txtStatus.text = ServiceStatus.STOP_SERVICE.description
         success.visibility = View.VISIBLE
         start.isEnabled = true
     }

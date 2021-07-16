@@ -1,16 +1,15 @@
 package com.mrtwon.framex.FragmentTop
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.mrtwon.framex.Content.CollectionContentEnum
 import com.mrtwon.framex.Content.ContentTypeEnum
 import com.mrtwon.framex.Content.GenresEnum
-import com.mrtwon.framex.Model.ModelDatabase
+import com.mrtwon.framex.GeneralVM
 import com.mrtwon.framex.room.Content
 import kotlinx.coroutines.DelicateCoroutinesApi
 
-class TopViewModel: ViewModel() {
-    private val model = ModelDatabase()
+class TopViewModel: GeneralVM() {
+
     val listLiveData =  MutableLiveData<List<Content>>()
     @DelicateCoroutinesApi
     fun getContentByGenresEnum(genres: GenresEnum, content: ContentTypeEnum){

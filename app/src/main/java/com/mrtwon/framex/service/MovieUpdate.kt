@@ -3,7 +3,7 @@ package com.mrtwon.framex.service
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.startandroid.MyApplication
-import com.mrtwon.framex.Model.ModelDatabase
+import com.mrtwon.framex.Model.Model
 import com.mrtwon.framex.Retrofit.InstanceApi
 import com.mrtwon.framex.Retrofit.VideoCdn.Movies.DataItem
 import com.mrtwon.framex.room.*
@@ -11,7 +11,7 @@ import kotlinx.coroutines.*
 
 class MovieUpdate : InterfaceUpdate<DataItem> {
     private val CONTENT_TYPE = "movie"
-    private val modelDatabase = ModelDatabase()
+    private val model: Model = Model()
     private val contentForUpdate = arrayListOf<DataItem>()
     var contentForProgress = hashSetOf<DataItem>()
     val progressIntUpdate = MutableLiveData<Int>()
@@ -83,9 +83,9 @@ class MovieUpdate : InterfaceUpdate<DataItem> {
             val genres = GenresMovie.build(kp_pojo, cdn)
             val countries = CountriesMovie.build(kp_pojo, cdn)
             //add to database
-            modelDatabase.addMovieSync(serial)
-            modelDatabase.addGenresSync(genres, CONTENT_TYPE)
-            modelDatabase.addCountriesSync(countries, CONTENT_TYPE)
+            model.addMovieSync(serial)
+            model.addGenresSync(genres, CONTENT_TYPE)
+            model.addCountriesSync(countries, CONTENT_TYPE)
         }
     }
 

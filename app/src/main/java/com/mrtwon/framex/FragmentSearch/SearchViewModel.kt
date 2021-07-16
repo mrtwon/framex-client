@@ -1,12 +1,10 @@
 package com.mrtwon.framex.FragmentSearch
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.mrtwon.framex.Model.ModelDatabase
+import com.mrtwon.framex.GeneralVM
 import com.mrtwon.framex.room.Content
 
-class SearchViewModel: ViewModel() {
-    val model = ModelDatabase()
+class SearchViewModel: GeneralVM() {
     val searchContent = MutableLiveData<List<Content>>()
 
     fun search(searchString: String){

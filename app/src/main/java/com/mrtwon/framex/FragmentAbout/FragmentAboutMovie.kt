@@ -1,7 +1,6 @@
 package com.mrtwon.framex.FragmentAbout
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
@@ -15,16 +14,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.startandroid.MyApplication
 import com.google.android.material.appbar.MaterialToolbar
 import com.mrtwon.framex.ActivityWebView.ActivityWebView
 import com.mrtwon.framex.MainActivity
-import com.mrtwon.framex.Model.ModelApi
 import com.mrtwon.framex.R
 import com.mrtwon.framex.room.MovieWithGenresDataBinding
 import com.mrtwon.framex.databinding.FragmentAboutMovieBinding
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import com.squareup.picasso.Target
 import jp.wasabeef.picasso.transformations.BlurTransformation
 import kotlinx.coroutines.*
 import java.lang.Exception
@@ -135,7 +133,7 @@ class FragmentAboutMovie: Fragment(), View.OnClickListener, Toolbar.OnMenuItemCl
     private fun checkBlockAndStartActivity() {
         GlobalScope.launch(CoroutineExceptionHandler { _, _ -> }) {
             id?.let {
-                val isBlocked = ModelApi().checkedBlockSync(it, "movie")
+                val isBlocked = aboutVM.model.checkedBlockSync(it, "movie")
                 if (!isBlocked) {
 
                     Log.i("self-about","checkBlockAndStartActivity !isBlocked")

@@ -62,19 +62,8 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
                 }
             }
         }
-        log("current = $current")
-        log("fragment_home ${R.id.fragmentHome}")
-        log("fragment_favorite ${R.id.fragmentFavorite}")
-        log("fragment_search ${R.id.fragmentSearch}")
     }
 
-    /*inner class NetworkState : BroadcastReceiver(){
-        override fun onReceive(context: Context?, intent: Intent?) {
-            val manager = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
-        }
-
-    }*/
     private fun log(s: String){
         Log.i("self-main",s)
     }

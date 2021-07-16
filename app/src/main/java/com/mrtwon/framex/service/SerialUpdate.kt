@@ -4,7 +4,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.example.startandroid.MyApplication
-import com.mrtwon.framex.Model.ModelDatabase
+import com.mrtwon.framex.Model.Model
 import com.mrtwon.framex.Retrofit.InstanceApi
 import com.mrtwon.framex.Retrofit.VideoCdn.TvSeries.DataItem
 import com.mrtwon.framex.room.Countries
@@ -12,12 +12,11 @@ import com.mrtwon.framex.room.Genres
 import com.mrtwon.framex.room.Serial
 import kotlinx.coroutines.*
 import java.util.*
-import kotlin.collections.HashSet
 
 
 class SerialUpdate() : InterfaceUpdate<DataItem>  {
     private val CONTENT_TYPE = "tv_series"
-    private val modelDatabase = ModelDatabase()
+    private val model: Model = Model()
     private val contentForUpdate = arrayListOf<DataItem>()
     val contentForProgress = hashSetOf<DataItem>()
     val progressIntUpdate = MutableLiveData<Int>()
@@ -91,9 +90,9 @@ class SerialUpdate() : InterfaceUpdate<DataItem>  {
             val genres = Genres.build(kp_pojo, cdn)
             val countries = Countries.build(kp_pojo, cdn)
             //add to database
-            modelDatabase.addSerialSync(serial)
-            modelDatabase.addGenresSync(genres, CONTENT_TYPE)
-            modelDatabase.addCountriesSync(countries, CONTENT_TYPE)
+            model.addSerialSync(serial)
+            model.addGenresSync(genres, CONTENT_TYPE)
+            model.addCountriesSync(countries, CONTENT_TYPE)
         }
     }
 

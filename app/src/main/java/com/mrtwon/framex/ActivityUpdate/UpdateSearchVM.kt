@@ -1,16 +1,11 @@
 package com.mrtwon.framex.ActivityUpdate
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.mrtwon.framex.Model.ModelApi
-import com.mrtwon.framex.Model.ModelDatabase
+import com.mrtwon.framex.GeneralVM
 import com.mrtwon.framex.room.Movie
 import com.mrtwon.framex.room.Serial
 
-class UpdateSearchVM: ViewModel() {
-    private val model = ModelDatabase()
-    private val modeApi = ModelApi()
+class UpdateSearchVM: GeneralVM() {
 
     val movieToUpdate = MutableLiveData<ArrayList<Movie>>() // for update
     val serialToUpdate = MutableLiveData<ArrayList<Serial>>() //for update

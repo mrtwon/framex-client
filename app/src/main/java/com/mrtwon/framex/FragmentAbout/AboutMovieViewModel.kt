@@ -1,13 +1,12 @@
 package com.mrtwon.framex.FragmentAbout
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.mrtwon.framex.Model.ModelDatabase
+import com.mrtwon.framex.GeneralVM
 import com.mrtwon.framex.room.MovieWithGenres
 import kotlinx.coroutines.DelicateCoroutinesApi
 
-class AboutMovieViewModel: ViewModel() {
-    val model = ModelDatabase()
+class AboutMovieViewModel: GeneralVM() {
+
     val contentData = MutableLiveData<MovieWithGenres>()
     val isFavoriteBoolean = MutableLiveData<Boolean>()
     @DelicateCoroutinesApi

@@ -1,13 +1,12 @@
 package com.mrtwon.framex.FragmentAbout
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.mrtwon.framex.Model.ModelDatabase
+import com.mrtwon.framex.GeneralVM
 import com.mrtwon.framex.room.SerialWithGenres
 import kotlinx.coroutines.DelicateCoroutinesApi
 
-class AboutSerialViewModel: ViewModel() {
-    val model = ModelDatabase()
+class AboutSerialViewModel: GeneralVM() {
+
     val contentData = MutableLiveData<SerialWithGenres>()
     val isFavoriteBoolean = MutableLiveData<Boolean>()
     @DelicateCoroutinesApi
