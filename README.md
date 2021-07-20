@@ -13,7 +13,8 @@
   <li>Для работы с API используется Retrofit</li>
   <li>Для кэширование и загрузки изображений используется Picasso</li>
   <li>Управление потоками через Coroutines</li>
-  <li>Реализация инверсии зависимостей чере Dagger 2</li>
+  <li>Реализация иньекции зависимостей чере Dagger 2</li>
+  <li>Парсинг XML через собственную библиотеку <a href="https://github.com/mrtwon/SimpleXmlParser">SimpleXmlParser</a></li>
 </ul>
 <h2>✅ Особенности</h2>
 <ul>
