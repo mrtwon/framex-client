@@ -3,14 +3,17 @@ package com.mrtwon.framex.Model
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.startandroid.MyApplication
-import com.example.startandroid.room.Database
+import com.example.testbook.Retrofit.Kinopoisk.KinopoiskApi
+import com.github.mrtwon.library.XmlParse
+import com.mrtwon.framex.room.Database
 import com.mrtwon.framex.Content.CollectionContentEnum
 import com.mrtwon.framex.Content.ContentTypeEnum
 import com.mrtwon.framex.Content.GenresEnum
-import com.mrtwon.framex.Retrofit.InstanceApi
+import com.mrtwon.framex.Retrofit.Kinopoisk.Data
 import com.mrtwon.framex.Retrofit.Kinopoisk.POJOKinopoisk
 import com.mrtwon.framex.Retrofit.KinopoiskRating.RatingApi
 import com.mrtwon.framex.Retrofit.KinopoiskRating.RatingPOJO
+import com.mrtwon.framex.Retrofit.VideoCdn.VideoCdnApi
 import com.mrtwon.framex.room.*
 import kotlinx.coroutines.*
 import java.util.*
@@ -19,9 +22,8 @@ import java.util.*
 * Model Class
 * Working with network and database
  */
-class Model {
-    private val db: Database = MyApplication.getInstance.DB // instance Database
-
+class Model(val db: Database, private val kinopoiskApi: KinopoiskApi,
+            private val videoCdnApi: VideoCdnApi, private val ratingApi: XmlParse) {
     /*
     Model Api
      */
@@ -31,7 +33,7 @@ class Model {
             noConnect(true)
         }) {
             val responseListSerials =
-                InstanceApi.videoCdn.searchSerial(query).execute().body()?.data
+                videoCdnApi.searchSerial(query).execute().body()?.data
             val result = arrayListOf<Serial>()
             if (responseListSerials != null) {
                 for (element in responseListSerials) {
@@ -41,7 +43,7 @@ class Model {
                         }
                     } else { continue }
                     element.kinopoiskId?.let {
-                        val kp_pojo = InstanceApi.kinopoisk.filmsInfo(it.toInt()).execute().body()
+                        val kp_pojo = kinopoiskApi.filmsInfo(it.toInt()).execute().body()
                         val rating = RatingApi.getRating(it.toInt())
                         result.add(
                             Serial.build(
@@ -58,7 +60,7 @@ class Model {
         GlobalScope.launch(CoroutineExceptionHandler { context, exception ->
             noConnect(true)
         }) {
-            val responseListSerials = InstanceApi.videoCdn.searchMovie(query).execute().body()?.data
+            val responseListSerials = videoCdnApi.searchMovie(query).execute().body()?.data
             val result = arrayListOf<Movie>()
             if (responseListSerials != null) {
                 for (element in responseListSerials) {
@@ -70,7 +72,7 @@ class Model {
                         continue
                     }
                     element.kinopoiskId?.let {
-                        val kp_pojo = InstanceApi.kinopoisk.filmsInfo(it.toInt()).execute().body()
+                        val kp_pojo = kinopoiskApi.filmsInfo(it.toInt()).execute().body()
                         val rating = RatingApi.getRating(it.toInt())
                         result.add(
                             Movie.build(
@@ -87,18 +89,18 @@ class Model {
     fun checkedBlockSync(id: Int, contentType: String): Boolean{
         when(contentType){
             "tv_series" -> {
-                return InstanceApi.videoCdn.serialById(id).execute().body()?.data?.isEmpty() ?: true
+                return videoCdnApi.serialById(id).execute().body()?.data?.isEmpty() ?: true
             }
             "movie" -> {
-                return InstanceApi.videoCdn.movieById(id).execute().body()?.data?.isEmpty() ?: true
+                return videoCdnApi.movieById(id).execute().body()?.data?.isEmpty() ?: true
             }
         }
         return false
     }
 
 
-    fun giveKpSync(kp_id: Int): POJOKinopoisk? = InstanceApi.kinopoisk.filmsInfo(kp_id).execute().body()
-    fun giveRatingSync(kp_id: Int): RatingPOJO = RatingApi.getRating(kp_id)
+    fun giveKpSync(kp_id: Int): POJOKinopoisk? = kinopoiskApi.filmsInfo(kp_id).execute().body()
+    fun giveRatingSync(kp_id: Int): RatingPOJO = ratingApi.request(kp_id.toString(), RatingPOJO::class.java)
 
 
 

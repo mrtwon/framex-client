@@ -16,7 +16,7 @@ import java.util.*
 
 class SerialUpdate() : InterfaceUpdate<DataItem>  {
     private val CONTENT_TYPE = "tv_series"
-    private val model: Model = Model()
+    private val model: Model = MyApplication.getInstance.appComponents.getModel()
     private val contentForUpdate = arrayListOf<DataItem>()
     val contentForProgress = hashSetOf<DataItem>()
     val progressIntUpdate = MutableLiveData<Int>()

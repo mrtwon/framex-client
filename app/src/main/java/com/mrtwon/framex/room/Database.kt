@@ -1,4 +1,4 @@
-package com.example.startandroid.room
+package com.mrtwon.framex.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

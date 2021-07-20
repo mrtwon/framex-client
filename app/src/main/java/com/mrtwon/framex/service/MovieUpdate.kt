@@ -11,7 +11,7 @@ import kotlinx.coroutines.*
 
 class MovieUpdate : InterfaceUpdate<DataItem> {
     private val CONTENT_TYPE = "movie"
-    private val model: Model = Model()
+    private val model: Model = MyApplication.getInstance.appComponents.getModel()
     private val contentForUpdate = arrayListOf<DataItem>()
     var contentForProgress = hashSetOf<DataItem>()
     val progressIntUpdate = MutableLiveData<Int>()
