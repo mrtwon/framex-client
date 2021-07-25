@@ -2,10 +2,8 @@ package com.mrtwon.framex.room
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.room.*
 import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
 
 @Dao
 interface Dao {
@@ -198,7 +196,34 @@ interface Dao {
     @Insert
     fun insertCountriesMovie(countries: CountriesMovie)
 
+    // function for subscription table
+    @Query("SELECT * FROM Subscription")
+    fun getSubscriptions(): List<Subscription>
+    @Query("SELECT * FROM Subscription WHERE content_id = :id")
+    fun getSubscriptionById(id: Int): Subscription?
+    @Query("SELECT * FROM Subscription WHERE content_id = :id")
+    fun getSubscriptionByIdLiveData(id: Int): LiveData<Subscription>
+    @Query("SELECT * FROM Subscription")
+    fun getSubscriptionsLiveData(): LiveData<List<Subscription>>
 
+    @Insert
+    fun addSubscription(subscription: Subscription)
 
-//SELECT * , count(kp_id) as count_id FROM Movie GROUP BY kp_id ORDER BY count_id DESC
+    @Update
+    fun updateSubscription(subscription: Subscription)
+
+    @Query("DELETE FROM subscription WHERE content_id = :id")
+    fun deleteSubscription(id: Int)
+
+    // function for notification table
+    @Query("SELECT * FROM Notification")
+    fun getNotification(): List<Notification>
+
+    @Query("SELECT * FROM Notification")
+    fun getNotificationLiveData(): LiveData<List<Notification>>
+
+    @Insert
+    fun insertNotifications(notification: List<Notification>)
+    @Delete
+    fun deleteNotification(notification: Notification)
 }

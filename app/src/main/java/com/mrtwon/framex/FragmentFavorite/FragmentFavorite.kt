@@ -26,15 +26,13 @@ class FragmentFavorite: Fragment() {
     lateinit var recycler_view: RecyclerView
     lateinit var tv_not_found: TextView
     val contentList = arrayListOf<Content>()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_favorite, container, false)
         recycler_view = view.findViewById(R.id.recycler_view)
         tv_not_found = view.findViewById(R.id.textView_favorite_not_found)
         recycler_view.layoutManager = GridLayoutManager(requireContext(), 2, RecyclerView.VERTICAL, false)
-        observerFavorite()
         observerContent()
         vm.getContent()
         recycler_view.adapter = Adapter(contentList)
@@ -45,27 +43,18 @@ class FragmentFavorite: Fragment() {
         (activity as MainActivity).reselectedNavigationPosition()
         super.onStart()
     }
-    fun observerFavorite(){
-        vm.favoriteLiveData.observe(viewLifecycleOwner, Observer {
-            Log.i("self-favorite","size list = ${it.size}")
-            if(it.size > 0) {
-                tv_not_found.visibility = View.GONE
-                recycler_view.visibility = View.VISIBLE
-                /*for(elem in it){
-                    Log.i("self-favorite", "id ${elem.id} | idRef ${elem.idRef}} | contentType")
-                }*/
-                recycler_view.adapter?.notifyDataSetChanged()
-            }else{
-                recycler_view.visibility = View.GONE
-                tv_not_found.visibility = View.VISIBLE
-            }
-        })
-    }
     fun observerContent(){
         vm.contentList.observe(viewLifecycleOwner, Observer {
-            contentList.clear()
-            contentList.addAll(it.reversed())
-            recycler_view.adapter?.notifyDataSetChanged()
+            if(it.isEmpty()){
+                recycler_view.visibility = View.GONE
+                tv_not_found.visibility = View.VISIBLE
+            }else{
+                contentList.clear()
+                contentList.addAll(it.reversed())
+                recycler_view.adapter?.notifyDataSetChanged()
+                tv_not_found.visibility = View.GONE
+                recycler_view.visibility = View.VISIBLE
+            }
         })
     }
 

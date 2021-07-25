@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/ggg"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+<Button
+    android:id="@+id/state"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Status WorkManager"/>
+    <Button
+        android:id="@+id/stop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Stop WorkManager"/>
+    <Button
+        android:id="@+id/notification_test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Send Notification"
+        />
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:drawableLeft="@drawable/ic_help"
+    android:text="Данные обновляются каждые 30 минут"
+    android:letterSpacing="0.1"
+    android:layout_margin="5dp"
+    />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Мои подписки 🎬"
+        android:textSize="25sp"
+        android:paddingStart="20dp"
+        android:gravity="left"
+        />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_subscription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        />
+    <TextView
+        android:id="@+id/helper_subscription"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="... Тут будут ваши подписки на сериалы"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="19sp"
+        android:gravity="center"
+        android:layout_margin="20dp"
+        android:visibility="gone" />
+    </FrameLayout>
+
+</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Уведомления 🔔"
+            android:paddingLeft="20dp"
+            android:textSize="25sp"
+            android:gravity="left"
+            android:layout_marginTop="20dp"
+            />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_notification"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="30dp"
+            android:visibility="gone"
+            />
+        <TextView
+            android:id="@+id/helper_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="... Тут будут уведомления о новых сериях"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="19sp"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:visibility="gone"
+            />
+        </FrameLayout>
+    </LinearLayout>
+</LinearLayout>

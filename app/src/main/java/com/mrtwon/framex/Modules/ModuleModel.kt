@@ -34,8 +34,23 @@ class ModuleModel {
       return Room.databaseBuilder(MyApplication.getInstance.applicationContext,
          Database::class.java, "database")
          .createFromAsset("database")
-         .addMigrations(object: Migration(8,9){
-            override fun migrate(database: SupportSQLiteDatabase){ /*  Migration Action */}})
+         .addMigrations(object: Migration(10,11){
+            override fun migrate(database: SupportSQLiteDatabase){
+            /*  Migration Action */
+            /*database.execSQL("""
+               CREATE TABLE subscription (
+                   id         INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                   content_id INTEGER,
+                   count      INTEGER
+               );
+               CREATE TABLE notification (
+                   id         INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                   content_id INTEGER,
+                   season     TEXT,
+                   series     TEXT
+               );
+            """.trimIndent())*/
+            }})
          .build()
    }
 }

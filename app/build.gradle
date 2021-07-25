@@ -102,4 +102,7 @@ dependencies {
     // my library SimpleXmlParser
     implementation 'com.github.mrtwon:SimpleXmlParser:1.0'
 
+    // work manager
+    implementation "androidx.work:work-runtime-ktx:2.6.0-beta01"
+
 }

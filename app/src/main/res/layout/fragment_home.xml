@@ -19,6 +19,40 @@
     android:layout_height="match_parent">
 
 <androidx.cardview.widget.CardView
+    android:id="@+id/subscription_card_view"
+    android:layout_width="370dp"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="5dp"
+    android:layout_gravity="center"
+    android:layout_marginBottom="20dp">
+    <LinearLayout
+        android:id="@+id/linear_layout_subscription"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/subscription_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/textView_label_category_subscription"
+            android:fontFamily="sans-serif"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:textColor="#FBFBFB"
+            android:letterSpacing="0.1"
+            android:background="#FF6767"
+            />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:src="@drawable/subscription"
+        android:background="@color/colorPrimary"
+        android:alpha="0.8"
+        />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
+<androidx.cardview.widget.CardView
     android:id="@+id/recent_card_view"
     android:layout_width="370dp"
     android:layout_height="wrap_content"

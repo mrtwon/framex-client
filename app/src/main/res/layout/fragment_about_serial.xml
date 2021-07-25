@@ -125,12 +125,12 @@
                 android:gravity="center"
                 >
                 <Button
-                    android:id="@+id/download"
+                    android:id="@+id/subscription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/text_button_download"
+                    android:text="@string/text_button_subscription"
                     android:layout_marginRight="15dp"
-                    android:drawableRight="@drawable/ic_download"
+                    android:drawableLeft="@drawable/ic_notification"
                     />
 
                 <Button

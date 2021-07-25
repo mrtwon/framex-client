@@ -10,11 +10,14 @@ import com.mrtwon.framex.room.Favorite
 
 class FavoriteViewModel: GeneralVM() {
 
-
-    val dao = MyApplication.getInstance.DB.dao()
-    val favoriteLiveData: LiveData<List<Favorite>> = dao.getFavoriteLiveData()
+    private val favoriteLiveData: LiveData<List<Favorite>> = model.db.dao().getFavoriteLiveData()
     val contentList = MutableLiveData<List<Content>>()
 
+    init {
+        favoriteLiveData.observeForever {
+            getContent()
+        }
+    }
     fun getContent(){
         Log.i("self-favorite","getContent()")
         model.getFavorite {

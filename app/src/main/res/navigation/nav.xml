@@ -29,6 +29,9 @@
         <action
             android:id="@+id/action_fragmentHome_to_fragmentSearchDescription"
             app:destination="@id/fragmentSearchDescription" />
+        <action
+            android:id="@+id/action_fragmentHome_to_fragmentSubscription"
+            app:destination="@id/fragmentSubscription" />
     </fragment>
     <fragment
         android:id="@+id/fragmentTop"
@@ -88,4 +91,8 @@
         android:id="@+id/fragmentSearchDescription"
         android:name="com.mrtwon.framex.FragmentSearch.FragmentSearchDescription"
         android:label="FragmentSearchDescription" />
+    <fragment
+        android:id="@+id/fragmentSubscription"
+        android:name="com.mrtwon.framex.FragmentSubscription.FragmentSubscription"
+        android:label="FragmentSubscription" />
 </navigation>

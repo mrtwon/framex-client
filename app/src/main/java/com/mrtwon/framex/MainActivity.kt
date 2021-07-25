@@ -28,6 +28,15 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         bottomBar = findViewById(R.id.bottom_nav_menu)
         bottomBar.setOnItemSelectedListener(this)
+
+
+        //если пришёл intent с намерением запустить фрагмент
+        val redirect = intent.getStringExtra("redirect")
+        if(redirect != null){
+            when(redirect){
+                "FragmentSubscription" -> navController.navigate(R.id.fragmentSubscription)
+            }
+        }
     }
     fun hiddenBottomBar(){
         bottomBar.visibility = View.GONE

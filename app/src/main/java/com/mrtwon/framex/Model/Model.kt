@@ -399,6 +399,58 @@ class Model(val db: Database, private val kinopoiskApi: KinopoiskApi,
         }
     }
 
+    fun getNotificationList(callback: (List<Notification>) -> Unit){
+        GlobalScope.launch(Dispatchers.IO) {
+            val result = db.dao().getNotification()
+            callback(result)
+        }
+    }
+    fun getNotificationListLiveData(): LiveData<List<Notification>> = db.dao().getNotificationLiveData()
+    fun getSubscriptionListLiveData(): LiveData<List<Subscription>> = db.dao().getSubscriptionsLiveData()
+
+    fun getSubscriptionList(callback: (List<Serial>) -> Unit){
+        GlobalScope.launch(Dispatchers.IO) {
+            val result = arrayListOf<Serial>()
+            val subscriptions = db.dao().getSubscriptions()
+            for(subscription in subscriptions){
+                val serial = db.dao().getSerial(subscription.content_id)
+                result.add(serial)
+            }
+            callback(result)
+        }
+    }
+    fun removeNotification(notification: Notification){
+        GlobalScope.launch {
+            val result = db.dao().deleteNotification(notification)
+        }
+    }
+    fun removeSubscription(id: Int){
+        GlobalScope.launch {
+            val result = db.dao().deleteSubscription(id)
+        }
+    }
+    fun subscriptionIf(id: Int){
+        GlobalScope.launch {
+            val isExisting = db.dao().getSubscriptionById(id)
+            if(isExisting == null){
+                val serial = db.dao().getSerial(id)
+                val count = allCountEpisodeSerialSync(id)
+                if(count != null){
+                    db.dao().addSubscription(Subscription().apply {
+                        this.count = count
+                        this.content_id = serial.id
+                    })
+                }
+            }else{
+                db.dao().deleteSubscription(id)
+            }
+        }
+    }
+    fun getSubscriptionByIdLiveData(id: Int): LiveData<Subscription> = db.dao().getSubscriptionByIdLiveData(id)
+    fun allCountEpisodeSerialSync(id: Int): Int?{
+        val response = videoCdnApi.serialById(id).execute().body()
+        return response?.data?.get(0)?.episodeCount
+    }
 
 
     /*

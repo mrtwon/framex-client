@@ -14,6 +14,7 @@ class StartedActivity: AppCompatActivity() {
         Log.i("self-started", "db existing - ${isExist()}")
         if(isExist()){
             startActivity(Intent(this, MainActivity::class.java))
+            //startActivity(Intent(this, TestWorker::class.java))
             finish()
         }else{
             startActivity(Intent(this, ActivityWelcome::class.java))

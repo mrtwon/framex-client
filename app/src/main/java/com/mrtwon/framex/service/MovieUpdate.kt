@@ -96,8 +96,7 @@ class MovieUpdate : InterfaceUpdate<DataItem> {
         }
     }
     override fun isExisting(item: DataItem): Boolean {
-        val db = MyApplication.getInstance.DB.dao()
-        return db.movieIsAlreadyById(item.id!!) == null
+        return model.db.dao().movieIsAlreadyById(item.id!!) == null
     }
     fun isExistingList(item: DataItem): Boolean {
         val result = contentForUpdate.count { dataItem: DataItem -> dataItem.id == item.id } == 0

@@ -7,6 +7,7 @@ import com.mrtwon.framex.Model.Model
 import com.mrtwon.framex.Modules.ApiModule
 import com.mrtwon.framex.Modules.ModuleModel
 import com.mrtwon.framex.Retrofit.VideoCdn.VideoCdnApi
+import com.mrtwon.framex.room.Database
 import dagger.Component
 import javax.inject.Singleton
 
@@ -16,6 +17,8 @@ abstract class AppComponents {
     abstract fun inject(vm: GeneralVM)
 
     abstract fun getModel(): Model
+
+    abstract fun getDatabase(): Database
 
     abstract fun getRatingApi(): XmlParse
 

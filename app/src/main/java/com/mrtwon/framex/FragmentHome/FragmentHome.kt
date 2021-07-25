@@ -72,6 +72,9 @@ class FragmentHome: Fragment() {
     }
     fun clickListener(v: View){
         v.apply {
+            findViewById<CardView>(R.id.subscription_card_view).setOnClickListener{
+                controller.navigate(R.id.action_fragmentHome_to_fragmentSubscription)
+            }
             findViewById<CardView>(R.id.new_type).setOnClickListener{
                 controller.navigate(R.id.action_fragmentHome_to_fragmentTop, Bundle().apply {
                     putParcelable("collection_enum", ParcelableEnum(CollectionContentEnum.NEW))

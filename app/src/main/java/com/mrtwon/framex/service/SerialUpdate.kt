@@ -116,8 +116,7 @@ class SerialUpdate() : InterfaceUpdate<DataItem>  {
         }
     }
     override fun isExisting(item: DataItem): Boolean {
-        val db = MyApplication.getInstance.DB.dao()
-        return db.serialIsAlreadyById(item.id!!) == null
+        return model.db.dao().serialIsAlreadyById(item.id!!) == null
     }
     fun isExistingList(item: DataItem): Boolean {
         val result = contentForUpdate.count { dataItem: DataItem -> dataItem.id == item.id } == 0

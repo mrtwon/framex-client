@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.Toast
@@ -12,24 +13,33 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import com.example.startandroid.MyApplication
 import com.google.android.material.appbar.MaterialToolbar
 import com.mrtwon.framex.ActivityWebView.ActivityWebView
 import com.mrtwon.framex.MainActivity
 import com.mrtwon.framex.R
+import com.mrtwon.framex.WorkManager.Work
 import com.mrtwon.framex.room.SerialWithGenresDataBinding
 import com.mrtwon.framex.databinding.FragmentAboutSerialBinding
+import com.mrtwon.framex.room.Subscription
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.fragment_about_movie.*
 import kotlinx.coroutines.*
 import java.lang.Exception
+import java.util.concurrent.TimeUnit
+import kotlin.math.log
 
 class FragmentAboutSerial: Fragment(), View.OnClickListener, Toolbar.OnMenuItemClickListener {
     val aboutVM: AboutSerialViewModel by lazy { ViewModelProvider(this).get(AboutSerialViewModel::class.java) }
+    lateinit var buttom_subscription: Button
     lateinit var DRAWABLE_ON: Drawable
     lateinit var DRAWABLE_OFF: Drawable
     lateinit var view: FragmentAboutSerialBinding
@@ -43,11 +53,7 @@ class FragmentAboutSerial: Fragment(), View.OnClickListener, Toolbar.OnMenuItemC
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         (activity as MainActivity).hiddenBottomBar()
         activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
@@ -60,7 +66,7 @@ class FragmentAboutSerial: Fragment(), View.OnClickListener, Toolbar.OnMenuItemC
         )
         frame_layout = view.frameLayout
         tool_bar = view.toolBar
-
+        buttom_subscription = view.subscription
         DRAWABLE_ON = ResourcesCompat.getDrawable(
             resources,
             R.drawable.favorite_on,
@@ -92,6 +98,8 @@ class FragmentAboutSerial: Fragment(), View.OnClickListener, Toolbar.OnMenuItemC
             id?.let {
                 aboutVM.isFavorite(it)
                 aboutVM.getAbout(it)
+                observerSubscription(aboutVM.initSubscriptionLiveData(it))
+                buttom_subscription.setOnClickListener{ aboutVM.subscriptionAction(id!!)}
             }
             super.onViewCreated(view, savedInstanceState)
         }
@@ -102,6 +110,20 @@ class FragmentAboutSerial: Fragment(), View.OnClickListener, Toolbar.OnMenuItemC
             (activity as MainActivity).showBottomBar()
             super.onDetach()
         }
+
+
+        fun observerSubscription(liveData: LiveData<Subscription>){
+            liveData.observe(viewLifecycleOwner){
+                if(it == null){
+                    Log.i("self-about", "null")
+                    buttom_subscription.text = resources.getString(R.string.text_button_subscription)
+                }else{
+                    Log.i("self-about", "not null")
+                    buttom_subscription.text = resources.getString(R.string.text_button_unsubscribe)
+                }
+            }
+        }
+
 
         fun observerIsFavorite() {
             aboutVM.isFavoriteBoolean.observe(viewLifecycleOwner, Observer {
@@ -174,6 +196,7 @@ class FragmentAboutSerial: Fragment(), View.OnClickListener, Toolbar.OnMenuItemC
                 }
             }
         }
+
 
         override fun onClick(v: View?) {
             (activity as MainActivity).navController.popBackStack()

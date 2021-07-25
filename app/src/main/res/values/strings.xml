@@ -10,6 +10,7 @@
     <string name="tab_added">Добавленные</string>
     <string name="textView_label_category_favorite">Избранные</string>
     <string name="textView_label_category_recent">Моя история</string>
+    <string name="textView_label_category_subscription">Мои подписки</string>
     <string name="textView_name_group_category">Категории ТОП-100 x</string>
 
 
@@ -28,7 +29,8 @@
     <string name="adventure_type">Приключения</string>
     <string name="detective_type">Детектив</string>
     <string name="text_button_look">Смотреть</string>
-    <string name="text_button_download">Скачать</string>
+    <string name="text_button_subscription">Подписаться</string>
+    <string name="text_button_unsubscribe">Отписаться</string>
 
     <string name="edit_text_hint_search">Поиск</string>
     <string name="edit_text_hint_search_description">Поиск по описанию</string>
