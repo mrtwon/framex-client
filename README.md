@@ -1,6 +1,6 @@
 <div style="display:block;">
 <br><a href="https://www.youtube.com/watch?v=zgslPfPuUOQ">ВИДЕО ОБЗОР ПРИЛОЖЕНИЯ</a><br>
-<a href="https://drive.google.com/file/d/1yZbjO1tLpz25ENuKu51ZQ16NfKq-tqdI/view?usp=sharing">Скачать Бета-версию приложения</a>
+<a href="https://drive.google.com/file/d/1-4_BciUUcnuochYOk77TYoLuq_BFciqA/view?usp=sharing">Скачать Бета-версию приложения</a>
 </div>
   <center><h2>🎬 Онлайн кинотеатр с открытым исходным кодом</h2></center>
 <p>Мой первый полноценный pet project 🙂 Он работает на 3х API (video cdn, kinopoisk api и unofficial kinopoisk api)</p>
@@ -31,7 +31,7 @@
 <ul>
   <li>Из за того что тянет базу данных - увеличивается вес приложения, база данных весит около 100 мб</li>
 </ul>
-<h1>Перед сборкой обьязательно <a href="https://disk.yandex.ru/d/YOpLAIBBuL8IBA">скачайте</a> и перенесите файл database в папку assets (не удалось включить его в проект из-за ограничений github)</h1>
+<h1>Перед сборкой обьязательно <a href="https://drive.google.com/file/d/1-PsdvlzsJtLJxNERfDvGwTp7W70jUqT5/view?usp=sharing">скачайте</a> и перенесите файл database в папку assets (не удалось включить его в проект из-за ограничений github)</h1>
 <p>
 <img style="width:300px;height:650px;"src="https://i.ibb.co/3y819Zh/screen-home.jpg"/>
 <img style="width:300px;height:650px;"src="https://i.ibb.co/tBYbq7m/screen-category.jpg"/>
