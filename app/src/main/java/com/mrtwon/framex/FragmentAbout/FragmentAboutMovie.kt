@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.coroutineScope
 import com.example.startandroid.MyApplication
 import com.google.android.material.appbar.MaterialToolbar
 import com.mrtwon.framex.ActivityWebView.ActivityWebView
@@ -69,23 +70,6 @@ class FragmentAboutMovie: Fragment(), View.OnClickListener, Toolbar.OnMenuItemCl
         super.onDetach()
     }
 
-    fun loadBackground(url: String?){
-            val image = ImageView(requireContext())
-            Picasso.get()
-                .load(url)
-                .transform(BlurTransformation(requireActivity(), 25, 1))
-                .into(image, object: Callback{
-                    override fun onSuccess() {
-                            val drawable = image.drawable
-                            frame_layout.background = drawable
-                    }
-
-                    override fun onError(e: Exception?) {
-                        
-                    }
-
-                })
-    }
 
     @DelicateCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -98,7 +82,7 @@ class FragmentAboutMovie: Fragment(), View.OnClickListener, Toolbar.OnMenuItemCl
         super.onViewCreated(view, savedInstanceState)
     }
 
-    fun observerIsFavorite(){
+    private fun observerIsFavorite(){
         aboutVM.isFavoriteBoolean.observe(viewLifecycleOwner, Observer {
             val favoriteIconElement = tool_bar.menu.findItem(R.id.favorite)
             if(it) {
@@ -109,52 +93,62 @@ class FragmentAboutMovie: Fragment(), View.OnClickListener, Toolbar.OnMenuItemCl
         })
     }
 
-    fun observerAbout(){
+    private fun loadBackgroundPoster(url: String?){
+        val imageBuff = ImageView(requireContext())
+        Picasso.get()
+            .load(url)
+            .transform(BlurTransformation(requireActivity(), 25, 1))
+            .into(imageBuff, object: Callback{
+                override fun onSuccess() {
+                    view.frameLayout.background = imageBuff.drawable
+                }
+
+                override fun onError(e: Exception?) { }
+
+            })
+    }
+
+    private fun loadPoster(url: String?){
+        Picasso.get()
+            .load(url)
+            .into(view.poster, object: Callback{
+                override fun onSuccess() {
+
+                }
+                override fun onError(e: Exception?) {
+                    view.poster.setImageResource(R.drawable.connect_error)
+                }
+            })
+    }
+
+    private fun setPosterAndBackground(url: String?) {
+        loadPoster(url)
+        loadBackgroundPoster(url)
+    }
+
+
+    private fun observerAbout(){
         aboutVM.contentData.observe(viewLifecycleOwner){
             // data binding
             Log.i("self-about","[test] ${it.ru_title_lower} ${it.year}")
             view.movie = MovieWithGenresDataBinding(it)
 
             //load poster
-            Picasso.get()
-                .load(it.poster)
-                .into(view.poster, object: Callback{
-                    override fun onSuccess() {}
-                    override fun onError(e: Exception?) {
-                        Log.i("self-top-content","error image load")
-                        view.poster.setImageResource(R.drawable.connect_error)
-                    }
-                })
-
-            loadBackground(it.poster)
+            setPosterAndBackground(it.poster)
         }
     }
 
     private fun checkBlockAndStartActivity() {
-        GlobalScope.launch(CoroutineExceptionHandler { _, _ -> }) {
-            id?.let {
-                val isBlocked = aboutVM.model.checkedBlockSync(it, "movie")
+        lifecycle.coroutineScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, _ -> }) {
+            id?.let { _id ->
+                val isBlocked = aboutVM.model.checkedBlockSync(_id, "movie")
                 if (!isBlocked) {
-
-                    Log.i("self-about","checkBlockAndStartActivity !isBlocked")
-                    startActivity(
-                        Intent(requireContext(), ActivityWebView::class.java).apply {
-                            putExtra("id", it)
-                            putExtra("content_type", "movie")
-                        },
-                    )
-
+                    val intent = Intent(requireContext(), ActivityWebView::class.java)
+                    intent.putExtra("id", _id)
+                    intent.putExtra("content_type", "movie")
+                    startActivity(intent)
                 } else {
-
-                    Log.i("self-about","checkBlockAndStartActivity isBlocked")
-                    launch(Dispatchers.Main) {
-                        Toast.makeText(
-                            requireContext(),
-                            "Контент не доступен",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-
+                    Toast.makeText(requireContext(), "Контент не доступен", Toast.LENGTH_LONG).show()
                 }
             }
         }

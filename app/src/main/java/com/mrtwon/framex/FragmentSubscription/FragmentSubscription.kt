@@ -1,38 +1,23 @@
 package com.mrtwon.framex.FragmentSubscription
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.work.*
 import com.mrtwon.framex.ActivityWebView.ActivityWebView
-import com.mrtwon.framex.ActivityWelcome.ActivityWelcome
 import com.mrtwon.framex.MainActivity
 import com.mrtwon.framex.R
-import com.mrtwon.framex.WorkManager.Work
+import com.mrtwon.framex.WorkManager.OldWork
 import com.mrtwon.framex.room.Notification
 import com.mrtwon.framex.room.Serial
-import com.mrtwon.framex.room.Subscription
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_subscription.view.*
-import org.w3c.dom.Text
-import java.util.*
-import java.util.concurrent.TimeUnit
 
 class FragmentSubscription:  Fragment(){
     val vm: SubscriptionVM by lazy { ViewModelProvider(this).get(SubscriptionVM::class.java) }
@@ -42,6 +27,9 @@ class FragmentSubscription:  Fragment(){
     lateinit var rv_subscription: RecyclerView
     lateinit var helper_notify: TextView
     lateinit var helper_subscript: TextView
+    lateinit var state_workmanager_online: TextView
+    lateinit var state_workmanager_offline: TextView
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_subscription, container, false)
@@ -52,67 +40,21 @@ class FragmentSubscription:  Fragment(){
         rv_subscription = view.findViewById(R.id.rv_subscription)
         helper_notify = view.findViewById(R.id.helper_notification)
         helper_subscript = view.findViewById(R.id.helper_subscription)
+        state_workmanager_online = view.findViewById(R.id.state_online)
+        state_workmanager_offline = view.findViewById(R.id.state_offline)
         rv_subscription.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         rv_notification.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         rv_notification.adapter = AdapterNotification(listNotification)
         rv_subscription.adapter = SubscriptionAdapter(listSubscription)
         observerNotification()
         observerSubscription()
-        view.findViewById<Button>(R.id.state).setOnClickListener{
-            val instance = WorkManager.getInstance(requireContext())
-            val workInfo = instance.getWorkInfosByTag("subscription")
-            val state = workInfo.get()
-            val toastState: String = when{
-                state.isEmpty() -> "Not workers"
-                else -> state[state.lastIndex].state.toString()
-            }
-            for(status in state){
-                Log.i("self-about", "state: ${status.state}")
-            }
-            Toast.makeText(requireContext(), toastState, Toast.LENGTH_SHORT).show()
-        }
-        view.findViewById<Button>(R.id.stop).setOnClickListener{
-            val instance = WorkManager.getInstance(requireContext())
-            instance.cancelAllWorkByTag("subscription")
-        }
-        view.findViewById<Button>(R.id.notification_test).setOnClickListener{
-            createNotificationChannel()
-            createNotification("Test message")
-        }
         super.onViewCreated(view, savedInstanceState)
     }
 
-    fun createNotification(text: String){
-
-        val intent = Intent(requireActivity(), MainActivity::class.java).putExtra("redirect", "FragmentSubscription")
-
-        val pendingIntent = PendingIntent.getActivity(
-            requireActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
-        )
-
-        val id = Random().nextInt(5000)
-        Log.i("self-main","createNotifty()")
-        val builder = NotificationCompat.Builder(requireContext(), "101")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("Новая серия")
-            .setContentText(text)
-            .setPriority(NotificationCompat.PRIORITY_MAX)
-            .setAutoCancel(true)
-            .setContentIntent(pendingIntent)
-            .build()
-        val manager = NotificationManagerCompat.from(requireContext())
-        manager.notify(id, builder)
+    override fun onStart() {
+        showStatusWorkManager()
+        super.onStart()
     }
-
-    fun createNotificationChannel(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            val name = "New Content"
-            val channel = NotificationChannel("101", name, NotificationManager.IMPORTANCE_DEFAULT)
-            val manager = requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            manager.createNotificationChannel(channel)
-        }
-    }
-
 
     fun observerSubscription(){
         vm.subscriptionListLiveData.observe(viewLifecycleOwner) {
@@ -146,6 +88,18 @@ class FragmentSubscription:  Fragment(){
 
     }
 
+    private fun showStatusWorkManager(){
+        val instance = WorkManager.getInstance(requireContext())
+        val workInfo = instance.getWorkInfosByTag("subscription")
+        val state = workInfo.get()
+        if(state.isNotEmpty() && state[state.lastIndex].state == WorkInfo.State.ENQUEUED){
+            state_workmanager_online.visibility = View.VISIBLE
+            state_workmanager_offline.visibility = View.GONE
+        }else{
+            state_workmanager_offline.visibility = View.VISIBLE
+            state_workmanager_online.visibility = View.GONE
+        }
+    }
 
 
     // subscription element

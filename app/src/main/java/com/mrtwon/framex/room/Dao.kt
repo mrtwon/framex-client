@@ -224,6 +224,10 @@ interface Dao {
 
     @Insert
     fun insertNotifications(notification: List<Notification>)
+
+    @Insert
+    fun insertNotification(notification: Notification)
+
     @Delete
     fun deleteNotification(notification: Notification)
 }

@@ -14,3 +14,4 @@
 .externalNativeBuild
 .cxx
 /app/src/main/assets/database
+app/release/

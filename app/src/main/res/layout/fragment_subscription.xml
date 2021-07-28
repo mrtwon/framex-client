@@ -4,30 +4,40 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-<Button
-    android:id="@+id/state"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Status WorkManager"/>
-    <Button
-        android:id="@+id/stop"
+    android:orientation="vertical"
+    android:layout_marginTop="10dp">
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Stop WorkManager"/>
-    <Button
-        android:id="@+id/notification_test"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Send Notification"
-        />
-<TextView
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/state_online"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Статус: Включен"
+            android:drawableLeft="@drawable/ic_workmanager_online"
+            android:textSize="22dp"
+            android:paddingStart="10dp"
+            android:visibility="gone"
+            />
+        <TextView
+            android:id="@+id/state_offline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Статус: Выключен"
+            android:drawableLeft="@drawable/ic_workmanager_offline"
+            android:textSize="22dp"
+            android:paddingStart="10dp"
+            android:visibility="gone"
+            />
+    </FrameLayout>
+    <TextView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:drawableLeft="@drawable/ic_help"
     android:text="Данные обновляются каждые 30 минут"
     android:letterSpacing="0.1"
-    android:layout_margin="5dp"
+    android:paddingStart="10dp"
     />
 <LinearLayout
     android:layout_width="match_parent"

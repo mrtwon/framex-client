@@ -16,26 +16,19 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.work.PeriodicWorkRequest
-import androidx.work.WorkInfo
-import androidx.work.WorkManager
-import com.example.startandroid.MyApplication
+import androidx.lifecycle.coroutineScope
 import com.google.android.material.appbar.MaterialToolbar
 import com.mrtwon.framex.ActivityWebView.ActivityWebView
 import com.mrtwon.framex.MainActivity
 import com.mrtwon.framex.R
-import com.mrtwon.framex.WorkManager.Work
 import com.mrtwon.framex.room.SerialWithGenresDataBinding
 import com.mrtwon.framex.databinding.FragmentAboutSerialBinding
 import com.mrtwon.framex.room.Subscription
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.BlurTransformation
-import kotlinx.android.synthetic.main.fragment_about_movie.*
 import kotlinx.coroutines.*
 import java.lang.Exception
-import java.util.concurrent.TimeUnit
-import kotlin.math.log
 
 class FragmentAboutSerial: Fragment(), View.OnClickListener, Toolbar.OnMenuItemClickListener {
     val aboutVM: AboutSerialViewModel by lazy { ViewModelProvider(this).get(AboutSerialViewModel::class.java) }
@@ -112,7 +105,7 @@ class FragmentAboutSerial: Fragment(), View.OnClickListener, Toolbar.OnMenuItemC
         }
 
 
-        fun observerSubscription(liveData: LiveData<Subscription>){
+        private fun observerSubscription(liveData: LiveData<Subscription>){
             liveData.observe(viewLifecycleOwner){
                 if(it == null){
                     Log.i("self-about", "null")
@@ -125,7 +118,7 @@ class FragmentAboutSerial: Fragment(), View.OnClickListener, Toolbar.OnMenuItemC
         }
 
 
-        fun observerIsFavorite() {
+        private fun observerIsFavorite() {
             aboutVM.isFavoriteBoolean.observe(viewLifecycleOwner, Observer {
                 val favoriteIconElement = tool_bar.menu.findItem(R.id.favorite)
                 if (it) {
@@ -136,62 +129,67 @@ class FragmentAboutSerial: Fragment(), View.OnClickListener, Toolbar.OnMenuItemC
             })
         }
 
-        fun observerAbout() {
+        private fun observerAbout() {
             aboutVM.contentData.observe(viewLifecycleOwner) {
                 // data binding
                 view.serial = SerialWithGenresDataBinding(it)
 
                 //load poster
-                Picasso.get()
-                    .load(it.poster)
-                    .into(view.poster, object : Callback {
-                        override fun onSuccess() {}
-                        override fun onError(e: Exception?) {
-                            Log.i("self-top-content", "error image load")
-                            view.poster.setImageResource(R.drawable.connect_error)
-                        }
-                    })
-                loadBackground(it.poster)
+                setPosterAndBackground(it.poster)
             }
         }
 
-        fun loadBackground(url: String?) {
-            val image = ImageView(requireContext())
+
+        fun loadBackgroundPoster(url: String?){
+            val imageBuff = ImageView(requireContext())
             Picasso.get()
                 .load(url)
                 .transform(BlurTransformation(requireActivity(), 25, 1))
-                .into(image, object : Callback {
+                .into(imageBuff, object: Callback{
                     override fun onSuccess() {
-                        val drawable = image.drawable
-                        frame_layout.background = drawable
+                        view.frameLayout.background = imageBuff.drawable
                     }
 
-                    override fun onError(e: Exception?) {}
+                    override fun onError(e: Exception?) { }
 
                 })
         }
 
+        fun loadPoster(url: String?){
+            Picasso.get()
+                .load(url)
+                .into(view.poster, object: Callback{
+                    override fun onSuccess() {
+
+                    }
+                    override fun onError(e: Exception?) {
+                        view.poster.setImageResource(R.drawable.connect_error)
+                    }
+                })
+        }
+
+        fun setPosterAndBackground(url: String?) {
+            loadPoster(url)
+            loadBackgroundPoster(url)
+        }
+
         private fun checkBlockAndStartActivity() {
-            GlobalScope.launch(CoroutineExceptionHandler { _, _ -> }) {
-                id?.let {
-                    val isBlocked = aboutVM.model.checkedBlockSync(it, "tv_series")
+            lifecycle.coroutineScope.launch(Dispatchers.IO + CoroutineExceptionHandler { context, error ->
+                Log.i("self-about","error")
+                error.printStackTrace()
+            }) {
+                Log.i("self-about","lifecycle scope to started")
+                id?.let { _id ->
+                    val isBlocked = aboutVM.model.checkedBlockSync(_id, "tv_series")
                     if (!isBlocked) {
-                        Log.i("self-about","checkBlockAndStartActivity !isBlocked")
-                        startActivity(
-                            Intent(requireContext(), ActivityWebView::class.java).apply {
-                                putExtra("id", it)
-                                putExtra("content_type", "tv_series")
-                            },
-                        )
+                        Log.i("self-about","not block")
+                        val intent = Intent(requireContext(), ActivityWebView::class.java)
+                        intent.putExtra("id", _id)
+                        intent.putExtra("content_type", "tv_series")
+                        startActivity(intent)
                     } else {
-                        Log.i("self-about","checkBlockAndStartActivity isBlocked")
-                        launch(Dispatchers.Main) {
-                            Toast.makeText(
-                                requireContext(),
-                                "Контент не доступен",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
+                        Log.i("self-about","block")
+                        Toast.makeText(requireContext(), "Контент не доступен", Toast.LENGTH_LONG).show()
                     }
                 }
             }
